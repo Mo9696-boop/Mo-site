@@ -3,6 +3,8 @@ export default async function handler(req, res) {
 
   const { messages, system } = req.body;
 
+  console.log('Received request, messages count:', messages?.length);
+
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -12,7 +14,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 1000,
         system,
         messages
@@ -20,8 +22,11 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+    console.log('Anthropic response status:', response.status);
+    console.log('Anthropic response:', JSON.stringify(data));
     res.status(200).json(data);
   } catch (err) {
-    res.status(500).json({ error: 'API call failed' });
+    console.log('Error:', err.message);
+    res.status(500).json({ error: err.message });
   }
 }
