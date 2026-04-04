@@ -1,6 +1,5 @@
 // v2 - gemini
 export default async function handler(req, res) {
-  export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const { messages, system } = req.body;
