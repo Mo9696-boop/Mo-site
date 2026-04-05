@@ -544,7 +544,6 @@ EXPERTISE: Tech transfer, SATT/PUI, TRL & IP, Horizon Europe, ANR, scientific co
 CONTACT: Mohamadhajj47@gmail.com | linkedin.com/in/mohamad-alhajj/
 Never invent information not listed here.`;
 
-let history=[];
 const msgs=document.getElementById('chatMsgs');
 const inp=document.getElementById('chatIn');
 const btn=document.getElementById('sendBtn');
@@ -561,18 +560,68 @@ function showTyping(){
 }
 function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
 function sendSug(el){document.getElementById('suggs').style.display='none';inp.value=el.textContent;sendMsg();}
+const KB = [
+  {
+    keys: ['cvlab','cv lab','mentoring','mentor','career','transition','researchers','phd students','postdoc'],
+    answer: "CVLab is Mo's career mentoring initiative for researchers. He helps doctoral students and postdocs identify the transferable value of their scientific expertise and reposition themselves toward industry, innovation, or tech transfer roles. So far he has personally mentored 100+ researchers. You can reach him directly on LinkedIn to learn more."
+  },
+  {
+    keys: ['la valorisation','valorisation','newsletter french','french newsletter','satt','tech transfer','transfert','valorization'],
+    answer: "La Valorisation is Mo's French-language newsletter on the research-to-market ecosystem in France. It covers SATTs, IP strategy, deeptech financing, TRL frameworks, and the full continuum from lab to market — written for researchers who want to understand valorization from the inside, not just hear about it from a distance."
+  },
+  {
+    keys: ['academia to industry','academia','industry','english newsletter','1200','subscribers','career transition'],
+    answer: "Academia to Industry is Mo's English-language newsletter for researchers navigating the leap out of academia. It covers mindset shifts, skill repositioning, networking, and job search strategy — written from lived experience. It has grown to 1,200+ subscribers."
+  },
+  {
+    keys: ['research','phd','oncology','telomere','genome','chromatin','crcm','aix','marseille','cancer','biology','turbo','apex','chec'],
+    answer: "Mo did his PhD at CRCM, Aix-Marseille University (2021-2024), focusing on telomere biology, genome integrity, and chromatin dynamics in ALT-positive cancer cells. He developed and validated several chromatin-mapping assays (TurboID, APEX2, ChEC-qPCR) that were adopted across collaborative projects. His first-author manuscript is currently under review at Nucleic Acids Research (IF 16.6)."
+  },
+  {
+    keys: ['publication','paper','manuscript','nucleic','article','submitted','review','ctf18','npc','pore'],
+    answer: "Mo's first-author manuscript — 'Ctf18-dependent localization of interstitial telomeric sequences to nuclear pore complexes prevents chromosome fragility' — is currently under review at Nucleic Acids Research (IF 16.6). It links Ctf18, interstitial telomeric sequences, and nuclear pore complex relocalization in ALT-positive cancer cells."
+  },
+  {
+    keys: ['contact','email','reach','connect','linkedin','hire','available','opportunity','job','work'],
+    answer: "Mo is based in Lyon, France and available from April 2026. You can reach him by email at Mohamadhajj47@gmail.com or connect with him on LinkedIn at linkedin.com/in/mohamad-alhajj — he's always open to interesting conversations."
+  },
+  {
+    keys: ['help','how can','what can','offer','do for','collaborate'],
+    answer: "Mo can help in several ways: mentoring researchers on career transitions through CVLab, sharing insights on the French tech transfer ecosystem through La Valorisation, or collaborating on projects at the intersection of science and innovation. The best first step is connecting on LinkedIn or sending him an email."
+  },
+  {
+    keys: ['newsletter','subscribers','audience','reach','50000','50k','scientists'],
+    answer: "Mo runs two newsletters reaching 50,000+ scientists monthly combined — La Valorisation (French, focused on tech transfer) and Academia to Industry (English, focused on career transitions). Academia to Industry alone has grown to 1,200+ subscribers."
+  },
+  {
+    keys: ['lyon','france','location','based','where','city'],
+    answer: "Mo is based in Lyon, France. He is available from April 2026 and authorized to work anywhere in the EU without visa sponsorship."
+  },
+  {
+    keys: ['skill','expertise','competence','know','experience','background','technical','microscopy','qpcr','western','blot'],
+    answer: "Mo's expertise spans two worlds: on the scientific side — chromatin biology, genome integrity, confocal microscopy, RT-qPCR, Western blotting, proteomic workflows, and data analysis. On the innovation side — tech transfer, SATT ecosystems, TRL & IP strategy, Horizon Europe, ANR funding, and researcher coaching."
+  },
+  {
+    keys: ['who','about','introduce','yourself','tell me about mo','mohamad','al hajj'],
+    answer: "Mo is a PhD in Oncology from Aix-Marseille University, currently based in Lyon. He spent 4+ years doing cancer research before realizing most researchers never learn what happens to science after the lab. So he built CVLab, La Valorisation, and Academia to Industry — three initiatives to close that gap. He is available for new opportunities from April 2026."
+  }
+];
+
+function getReply(text) {
+  const q = text.toLowerCase();
+  for (const item of KB) {
+    if (item.keys.some(k => q.includes(k))) return item.answer;
+  }
+  return "Great question! For the most accurate answer, reach Mo directly at Mohamadhajj47@gmail.com or on LinkedIn at linkedin.com/in/mohamad-alhajj — he usually responds quickly.";
+}
+
 async function sendMsg(){
   const text=inp.value.trim();if(!text)return;
   inp.value='';btn.disabled=true;
-  addMsg('user',text);history.push({role:'user',content:text});showTyping();
-  try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:history,system:SYS})});
-    const data=await res.json();
-    const reply=data.content?.find(b=>b.type==='text')?.text||"Sorry, I couldn't get a response. Reach Mo at Mohamadhajj47@gmail.com.";
-    removeTyping();addMsg('bot',reply);history.push({role:'assistant',content:reply});
-  }catch(e){
-    removeTyping();addMsg('bot',"Something went wrong. Reach Mo at Mohamadhajj47@gmail.com or LinkedIn.");
-  }
+  addMsg('user',text);showTyping();
+  await new Promise(r=>setTimeout(r,800+Math.random()*600));
+  removeTyping();
+  addMsg('bot', getReply(text));
   btn.disabled=false;inp.focus();
 }
 </script>
