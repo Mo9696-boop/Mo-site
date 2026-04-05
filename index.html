@@ -626,8 +626,9 @@ function getReply(text) {
     return "Mo was born on April 1st, 1996 — yes, April Fools' Day — and just turned 30.";
   if (/\b(nutrition|nutritionist|diet|certified|sports nutrition|nutriti)\b/.test(q))
     return "Mo is a certified nutritionist — which pairs well with his calisthenics training and marathon running. Science in the lab and science on the plate.";
+  if (/\b(marathon|pr|running|run|calisthenics|training|workout|sport|fitness|athletic)\b/.test(q))
     return "Mo's marathon PR is 3:30:15. He's also training calisthenics with the goal of competing at a high level — self-described beginner, aiming very high.";
-  if (/\b(food|eat|dish|cook|cuisine|restaurant|chef|recipe)\b/.test(q))
+  if (/\b(food|eat|dish|cook|cuisine|restaurant|chef|recipe|meal|favorite meal|favourite meal)\b/.test(q))
     return "Mo's favorite dish is kibbeh bi laban. If he weren't a scientist, he'd be a chef.";
   if (/\b(music|song|listen|artist|weeknd|playlist)\b/.test(q))
     return "Mo listens to The Weeknd. Good taste by any measure.";
