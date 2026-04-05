@@ -382,7 +382,7 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
             <span class="sk">Project Management</span><span class="sk">Scientific Communication</span>
             <span class="sk">Researcher Coaching</span><span class="sk">GxP / SOP / ALCOA+</span>
             <span class="sk">Deeptech Ecosystems</span><span class="sk">AI in Research</span>
-            <span class="sk">Genome Biology</span><span class="sk">Telomere Biology</span>
+            <span class="sk">Genome Biology</span><span class="sk">Telomere Biology</span><span class="sk">Certified Nutritionist</span>
           </div>
         </div>
         <br>
@@ -608,11 +608,45 @@ const KB = [
 ];
 
 function getReply(text) {
-  const q = text.toLowerCase();
+  const q = text.toLowerCase().replace(/[?!.,''`]/g, ' ');
+
+  // Pass 1: exact keyword match in KB (longer matches score higher)
+  let best = null, bestScore = 0;
   for (const item of KB) {
-    if (item.keys.some(k => q.includes(k))) return item.answer;
+    let score = 0;
+    for (const k of item.keys) {
+      if (q.includes(k)) score += k.split(' ').length * 3;
+    }
+    if (score > bestScore) { bestScore = score; best = item; }
   }
-  return "Great question! For the most accurate answer, reach Mo directly at Mohamadhajj47@gmail.com or on LinkedIn at linkedin.com/in/mohamad-alhajj — he usually responds quickly.";
+  if (bestScore > 0 && best) return best.answer;
+
+  // Pass 2: topic regex fallbacks (word boundaries for precision)
+  if (/\b(old|age|born|birth|birthday|how old|years old)\b/.test(q))
+    return "Mo was born on April 1st, 1996 — yes, April Fools' Day — and just turned 30.";
+  if (/\b(nutrition|nutritionist|diet|certified|sports nutrition|nutriti)\b/.test(q))
+    return "Mo is a certified nutritionist — which pairs well with his calisthenics training and marathon running. Science in the lab and science on the plate.";
+    return "Mo's marathon PR is 3:30:15. He's also training calisthenics with the goal of competing at a high level — self-described beginner, aiming very high.";
+  if (/\b(food|eat|dish|cook|cuisine|restaurant|chef|recipe)\b/.test(q))
+    return "Mo's favorite dish is kibbeh bi laban. If he weren't a scientist, he'd be a chef.";
+  if (/\b(music|song|listen|artist|weeknd|playlist)\b/.test(q))
+    return "Mo listens to The Weeknd. Good taste by any measure.";
+  if (/\b(book|read|reading|atomic|habits)\b/.test(q))
+    return "Mo's favorite book is Atomic Habits by James Clear.";
+  if (/\b(series|show|movie|watch|film|breaking|bad)\b/.test(q))
+    return "Favorite series: Breaking Bad. A scientist who builds an empire through sheer will — no comment on the parallels. 😄";
+  if (/\b(morning|coffee|routine|wake|start)\b/.test(q))
+    return "Mo's morning is simple: coffee, work, and calm.";
+  if (/\b(lebanon|lebanese|origin|hometown|miss|home country)\b/.test(q))
+    return "Mo is originally from Lebanon. What he misses most is the energy — the life, the people there.";
+  if (/\b(introvert|extrovert|personality|character|type|person)\b/.test(q))
+    return "Mo is curious above everything. Both introverted and extroverted depending on who's in the room — and deeply persistent when he sets his mind on something.";
+  if (/relat|girlfriend|boyfriend|dating|single|married|love|partner|wife|husband|taken|available|seeing someone|with someone|his girl|his guy|does he have|does mo have|is he with|is mo with|is he single|is mo single|does he date/.test(q))
+    return "Did you really think you'd get an answer here? 😄 Sorry to disappoint — Mo's personal life is strictly off the record. If you have a more professional enquiry though, reach him at Mohamadhajj47@gmail.com or linkedin.com/in/mohamad-alhajj — he's much more forthcoming on those.";
+  if (/\b(contact|email|reach|linkedin|hire|available)\b/.test(q))
+    return "Reach Mo at Mohamadhajj47@gmail.com or linkedin.com/in/mohamad-alhajj — available from April 2026.";
+
+  return "I may not have that detail — reach Mo directly at Mohamadhajj47@gmail.com or linkedin.com/in/mohamad-alhajj!";
 }
 
 async function sendMsg(){
