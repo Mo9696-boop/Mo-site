@@ -21,26 +21,25 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-s
 .cursor-grow #cursor{width:60px;height:60px;background:rgba(184,92,56,.15)}
 .cursor-grow #cursor-ring{width:0;height:0;opacity:0}
 
-/* ── Scroll progress bar ── */
-#progress-bar{position:fixed;top:0;left:0;height:2.5px;background:linear-gradient(90deg,var(--accent),var(--navy));width:0%;z-index:9000;transition:width .1s linear;transform-origin:left}
+/* ── Progress bar ── */
+#progress-bar{position:fixed;top:0;left:0;height:2.5px;background:linear-gradient(90deg,var(--accent),var(--navy));width:0%;z-index:9000}
 
-/* ── Cursor VIEW label ── */
+/* ── Cursor label ── */
 #cursor-label{position:fixed;pointer-events:none;z-index:9997;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--navy);border-radius:100px;padding:.25rem .7rem;opacity:0;transition:opacity .2s;transform:translate(16px,-50%)}
 #cursor-label.show{opacity:1}
 
-/* ── Scroll progress bar ── */
-#progress-bar{position:fixed;top:0;left:0;height:2.5px;background:linear-gradient(90deg,var(--accent),var(--navy));width:0%;z-index:9000}
+/* ── Grain ── */
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
 
-/* ── Sticky availability pill (bottom-left) ── */
+/* ── Sticky availability pill ── */
 #avail-pill{position:fixed;bottom:2rem;left:2rem;z-index:600;display:flex;align-items:center;gap:.55rem;background:var(--navy);border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:.5rem 1.1rem .5rem .75rem;box-shadow:0 8px 30px rgba(30,34,53,.25);text-decoration:none;transition:transform .3s,opacity .4s;cursor:none;opacity:1}
 #avail-pill:hover{transform:translateY(-3px)}
 #avail-pill.hidden{opacity:0;pointer-events:none}
-.ap-dot{width:8px;height:8px;background:#4ade80;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 0 rgba(74,222,128,.4);animation:apulse 2.5s ease-in-out infinite}
+.ap-dot{width:8px;height:8px;background:#4ade80;border-radius:50%;flex-shrink:0;animation:apulse 2.5s ease-in-out infinite}
 @keyframes apulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{box-shadow:0 0 0 6px rgba(74,222,128,0)}}
 .ap-text{font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.75)}
 
-/* ── Nav ── */
+/* ── Nav — always visible, never masks content ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:.8rem 3rem;background:rgba(245,241,234,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .4s}
 .nav-logo{font-family:'Libre Baskerville',serif;font-size:.95rem;font-weight:700;color:var(--navy);text-decoration:none;letter-spacing:.02em}
 .nav-links{display:flex;gap:2.5rem;list-style:none}
@@ -52,6 +51,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .nav-cta::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-101%);transition:transform .3s ease}
 .nav-cta:hover::before{transform:translateX(0)}
 .nav-cta span{position:relative;z-index:1}
+
+/* ── Hamburger ── */
 .nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:1px solid var(--border);border-radius:4px;cursor:none;padding:6px}
 .nav-burger span{display:block;width:100%;height:1.5px;background:var(--navy);border-radius:2px;transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .25s}
 .nav-burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
@@ -72,13 +73,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .orb3{width:250px;height:250px;background:rgba(184,92,56,.05);top:40%;left:40%;animation-delay:-5s}
 @keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.05)}}
 .hero-inner{max-width:1100px;margin:0 auto;width:100%;display:flex;align-items:center;position:relative;z-index:1}
+.hero-left{max-width:680px}
 .hero-eyebrow{display:flex;align-items:center;gap:.8rem;margin-bottom:2rem}
 .eyebrow-line{width:40px;height:1.5px;background:var(--accent)}
 .eyebrow-text{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+
+/* ── Portfolio word fill — clean CSS, no inline style tag ── */
 .pw-wrap{position:relative;display:inline-block;margin-bottom:1rem;overflow:hidden}
 .pw-ghost{font-family:'Libre Baskerville',serif;font-size:clamp(3.5rem,7vw,6.5rem);font-weight:700;color:transparent;-webkit-text-stroke:1.5px rgba(184,92,56,.25);letter-spacing:.04em;line-height:1;display:block;user-select:none}
 .pw-fill{position:absolute;inset:0;background:linear-gradient(90deg,var(--accent),var(--navy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;clip-path:inset(0 100% 0 0);animation:fillWord 1.2s .3s cubic-bezier(.16,1,.3,1) forwards;font-family:'Libre Baskerville',serif;font-size:clamp(3.5rem,7vw,6.5rem);font-weight:700;letter-spacing:.04em;line-height:1}
 @keyframes fillWord{to{clip-path:inset(0 0% 0 0)}}
+
 .hero-name{font-family:'Libre Baskerville',serif;font-size:clamp(2.8rem,5vw,4.5rem);font-weight:700;line-height:1.02;color:var(--navy);overflow:hidden}
 .hero-name .line{display:block;overflow:hidden;padding-bottom:.12em}
 .hero-name .line span{display:block;transform:translateY(100%);animation:slideUp .8s cubic-bezier(.16,1,.3,1) .1s forwards}
@@ -96,16 +101,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .btn-primary span{position:relative;z-index:1}
 .btn-outline{border:1.5px solid var(--border);color:var(--navy);background:transparent}
 .btn-outline:hover{border-color:var(--navy);background:var(--navy);color:#fff;transform:translateY(-2px)}
-.hero-stats{display:flex;flex-direction:column;gap:1px;opacity:0;animation:fadeIn .7s .8s forwards}
-@media(max-width:800px){.hero-stats{display:none}}
-.hstat{background:var(--card);border:1px solid var(--border);padding:1.6rem 2rem;position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1)}
-.hstat::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--accent);transition:width .4s ease}
-.hstat:hover{transform:translateX(8px)}
-.hstat:hover::before{width:3px}
-.hstat:first-child{border-radius:6px 6px 0 0}
-.hstat:last-child{border-radius:0 0 6px 6px}
-.hero-left{max-width:680px}
-.hero-stats{display:none}
 
 /* ── Marquee ── */
 .marquee-wrap{background:var(--navy);padding:.85rem 0;overflow:hidden}
@@ -114,7 +109,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .marquee-item::after{content:'✦';color:var(--accent);font-size:.6rem}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ── STAT BAND - full-width drama ── */
+/* ── STAT BAND — numbers at 15vw, inline suffix ── */
 #statband{background:var(--navy);padding:5rem 0;overflow:hidden;position:relative}
 #statband::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(184,92,56,.1) 0%,transparent 65%);pointer-events:none}
 .statband-grid{display:grid;grid-template-columns:repeat(4,1fr)}
@@ -122,7 +117,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .sband-item{padding:2.5rem 2rem;text-align:center;position:relative}
 .sband-item:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;bottom:20%;width:1px;background:rgba(255,255,255,.07)}
 @media(max-width:700px){.sband-item:nth-child(2)::after,.sband-item:nth-child(4)::after{display:none}}
-.sband-num-row{display:flex;align-items:baseline;justify-content:center;line-height:1;margin-bottom:.5rem}
+/* ── Inline suffix so "0K+" shows from the first frame ── */
+.sband-num-row{display:flex;align-items:baseline;justify-content:center;gap:.06em;line-height:1;margin-bottom:.5rem}
 .sband-num{font-family:'Libre Baskerville',serif;font-size:clamp(3rem,7vw,6rem);font-weight:700;color:#fff}
 .sband-suffix{font-family:'Libre Baskerville',serif;font-size:clamp(1.8rem,4vw,3.5rem);font-weight:700;color:var(--accent)}
 .sband-label{font-size:.68rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em}
@@ -133,12 +129,12 @@ section{padding:7rem 3rem}
 .sec-label{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem}
 .sec-label::before{content:'';width:30px;height:1.5px;background:var(--accent)}
 
-/* ── EDITORIAL title - bleeds off viewport ── */
+/* ── Editorial title — bleeds off edge ── */
 .sec-title-big{font-family:'Libre Baskerville',serif;font-size:clamp(3.5rem,9vw,9rem);font-weight:700;color:var(--navy);line-height:1.15;letter-spacing:-.02em;margin-bottom:3rem;white-space:nowrap;overflow:visible}
 .sec-title-big em{color:var(--accent);font-style:italic;display:block;margin-top:.1em}
 .sec-title{font-family:'Libre Baskerville',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:var(--navy);line-height:1.25}
 
-/* ── HORIZONTAL SCROLL builds ── */
+/* ── HORIZONTAL SCROLL projects ── */
 #builds{background:var(--bg2);padding:7rem 0}
 .builds-header{padding:0 3rem;margin-bottom:2.5rem;display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap}
 .builds-sub{font-size:.9rem;color:var(--muted);max-width:280px;line-height:1.7;text-align:right}
@@ -186,7 +182,7 @@ section{padding:7rem 3rem}
 .bcard-light:hover .bcard-arrow{color:var(--accent)}
 .bcard-dark:hover .bcard-arrow{color:rgba(255,255,255,.6)}
 
-/* ── ABOUT - parallax ── */
+/* ── ABOUT — parallax ── */
 #about{background:var(--bg);position:relative;overflow:hidden}
 .about-parallax{position:absolute;font-family:'Libre Baskerville',serif;font-size:clamp(8rem,20vw,18rem);font-weight:700;color:rgba(44,53,96,.04);line-height:1;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;white-space:nowrap;will-change:transform;z-index:0}
 .about-inner{position:relative;z-index:1}
@@ -210,7 +206,7 @@ section{padding:7rem 3rem}
 .about-right h3{font-size:.68rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;display:flex;align-items:center;gap:.7rem}
 .about-right h3::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* ── MAGNETIC skills ── */
+/* ── Magnetic skills ── */
 .skills{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:2.5rem}
 .sk{background:var(--bg2);border:1px solid var(--border);color:var(--muted);border-radius:100px;padding:.28rem .8rem;font-size:.74rem;cursor:none;transition:background .2s,border-color .2s,color .2s,box-shadow .2s;display:inline-block;will-change:transform}
 .sk:hover{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 4px 16px rgba(184,92,56,.3)}
@@ -298,7 +294,6 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
 .footer-contact-cta span{font-size:.7rem;color:rgba(255,255,255,.65);font-weight:500;letter-spacing:.06em;text-transform:uppercase}
 .footer-contact-cta:hover span{color:#fff}
 .fcc-dot{width:6px;height:6px;background:#4ade80;border-radius:50%;flex-shrink:0;animation:blink 2.5s infinite}
-
 .reveal{opacity:1;transform:none}
 </style>
 </head>
@@ -306,17 +301,14 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
 
 <div id="progress-bar"></div>
 <div id="cursor-label">View ↗</div>
-
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
-<!-- Sticky pill - bottom LEFT, never overlaps footer CTA -->
 <a id="avail-pill" href="https://www.linkedin.com/in/mohamad-alhajj/" target="_blank" rel="noopener">
   <span class="ap-dot"></span>
   <span class="ap-text">Open to opportunities</span>
 </a>
 
-<!-- Mobile menu -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#builds" onclick="closeMenu()">Projects</a>
   <a href="#about" onclick="closeMenu()">About</a>
@@ -370,7 +362,6 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
   </div>
 </div>
 
-<!-- STAT BAND -->
 <div id="statband">
   <div class="statband-grid">
     <div class="sband-item">
@@ -392,7 +383,6 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
   </div>
 </div>
 
-<!-- PROJECTS - horizontal scroll -->
 <section id="builds">
   <div class="builds-header">
     <div>
@@ -430,7 +420,6 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
   </div>
 </section>
 
-<!-- ABOUT - parallax word -->
 <section id="about">
   <div class="about-parallax" id="parallaxWord">IMPACT</div>
   <div class="si about-inner">
@@ -442,12 +431,12 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
         <div class="exp-list">
           <div class="exp-item">
             <div class="exp-role">Founder - CVLab</div>
-            <div class="exp-place">2025 – Present</div>
+            <div class="exp-place">2025 - Present</div>
             <div class="exp-desc">Building a mentoring platform, two newsletters, and a community of scientists brave enough to think beyond the lab.</div>
           </div>
           <div class="exp-item">
             <div class="exp-role">PhD in Oncology - CRCM, Aix-Marseille University</div>
-            <div class="exp-place">2021 – 2024</div>
+            <div class="exp-place">2021 - 2024</div>
             <div class="exp-desc">Four years studying how telomeres behave under stress, developing chromatin-mapping assays from scratch, and learning that rigorous science is only half the work.</div>
           </div>
           <div class="exp-item">
@@ -464,7 +453,7 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
       <div class="about-right">
         <div>
           <h3>Expertise</h3>
-          <div class="skills" id="skillsWrap">
+          <div class="skills">
             <span class="sk">Tech Transfer</span><span class="sk">SATT / PUI</span><span class="sk">TRL & IP</span><span class="sk">Horizon Europe</span><span class="sk">EIC / RIA / IA</span><span class="sk">ANR Funding</span><span class="sk">Project Management</span><span class="sk">Scientific Communication</span><span class="sk">Researcher Coaching</span><span class="sk">GxP / SOP / ALCOA+</span><span class="sk">Deeptech Ecosystems</span><span class="sk">AI in Research</span><span class="sk">Genome Biology</span><span class="sk">Telomere Biology</span><span class="sk">Certified Nutritionist</span>
           </div>
         </div>
@@ -552,21 +541,21 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
         <div class="footer-col">
           <h4>Connect</h4>
           <a href="https://www.linkedin.com/in/mohamad-alhajj/" target="_blank">LinkedIn</a>
-          <a href="/cdn-cgi/l/email-protection#307d5f58515d515458515a5a040770575d51595c1e535f5d">Email</a>
+          <a href="mailto:Mohamadhajj47@gmail.com">Email</a>
           <a href="#chat">Ask Mo</a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">© 2026 Mohamad AL HAJJ · All rights reserved</div>
-      <a class="footer-contact-cta" href="/cdn-cgi/l/email-protection#3b7654535a565a5f535a51510f0c7b5c565a525715585456">
+      <a class="footer-contact-cta" href="mailto:Mohamadhajj47@gmail.com">
         <span class="fcc-dot"></span><span>Get in touch</span>
       </a>
     </div>
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ── Cursor ── */
 const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
 const curLabel=document.getElementById('cursor-label');
@@ -581,7 +570,6 @@ document.querySelectorAll('a,button,.sk,.sug,.tcard,.exp-item,.comm-item').forEa
   el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-grow'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-grow'));
 });
-/* VIEW label on project cards */
 document.querySelectorAll('.bcard').forEach(el=>{
   el.addEventListener('mouseenter',()=>curLabel.classList.add('show'));
   el.addEventListener('mouseleave',()=>curLabel.classList.remove('show'));
@@ -594,25 +582,8 @@ window.addEventListener('scroll',()=>{
   pbar.style.width=((h.scrollTop||document.body.scrollTop)/(h.scrollHeight-h.clientHeight)*100)+'%';
 },{passive:true});
 
-/* ── Nav scroll class (kept for other uses) ── */
+/* ── Nav ── */
 window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('solid',window.scrollY>40),{passive:true});
-
-/* ── Scroll-triggered counters ── */
-function animCount(el,target){
-  if(el.dataset.animated)return;
-  el.dataset.animated='1';
-  el.textContent='0';
-  let s=0;const dur=2000,step=16,inc=target/(dur/step);
-  const iv=setInterval(()=>{
-    s=Math.min(s+inc,target);
-    el.textContent=target>=1000?Math.floor(s).toLocaleString():Math.floor(s);
-    if(s>=target){el.textContent=target>=1000?target.toLocaleString():String(target);clearInterval(iv);}
-  },step);
-}
-const cro=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){animCount(e.target,parseInt(e.target.dataset.count));cro.unobserve(e.target);}});
-},{threshold:0.2});
-document.querySelectorAll('[data-count]').forEach(el=>{el.textContent='0';cro.observe(el);});
 
 /* ── Mobile menu ── */
 function toggleMenu(){
@@ -626,61 +597,50 @@ function closeMenu(){
   document.body.style.overflow='';
 }
 
-/* ── Pill: hide when footer visible ── */
+/* ── Pill hide when footer visible ── */
 const pill=document.getElementById('avail-pill');
 new IntersectionObserver(entries=>{
   entries.forEach(e=>pill.classList.toggle('hidden',e.isIntersecting));
 },{threshold:.1}).observe(document.querySelector('footer'));
 
-/* ── Text scramble on sec-labels ── */
-const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-function scramble(el){
-  const original=el.textContent;
-  let iter=0;
+/* ── Scroll-triggered counters (single declaration, no duplicates) ── */
+function animCount(el,target){
+  if(el.dataset.animated)return;
+  el.dataset.animated='1';
+  el.textContent='0';
+  let s=0;const dur=2000,step=16,inc=target/(dur/step);
   const iv=setInterval(()=>{
-    el.textContent=original.split('').map((c,i)=>{
+    s=Math.min(s+inc,target);
+    el.textContent=target>=1000?Math.floor(s).toLocaleString():Math.floor(s);
+    if(s>=target){el.textContent=target>=1000?target.toLocaleString():String(target);clearInterval(iv);}
+  },step);
+}
+const counterObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){animCount(e.target,parseInt(e.target.dataset.count));counterObs.unobserve(e.target);}
+  });
+},{threshold:0.2});
+document.querySelectorAll('[data-count]').forEach(el=>{el.textContent='0';counterObs.observe(el);});
+
+/* ── Text scramble on sec-labels ── */
+const CHARS='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function scramble(el){
+  const orig=el.textContent;let iter=0;
+  const iv=setInterval(()=>{
+    el.textContent=orig.split('').map((c,i)=>{
       if(c===' ')return' ';
-      if(i<iter)return original[i];
-      return chars[Math.floor(Math.random()*chars.length)];
+      if(i<iter)return orig[i];
+      return CHARS[Math.floor(Math.random()*CHARS.length)];
     }).join('');
-    if(iter>=original.length)clearInterval(iv);
+    if(iter>=orig.length)clearInterval(iv);
     iter+=.8;
   },40);
 }
-new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){scramble(e.target);new IntersectionObserver(()=>{}).observe(e.target);}});
-},{threshold:.5}).observe;
 document.querySelectorAll('.sec-label').forEach(el=>{
   let done=false;
   new IntersectionObserver(entries=>{
     entries.forEach(e=>{if(e.isIntersecting&&!done){done=true;scramble(el);}});
   },{threshold:.8}).observe(el);
-});
-
-/* ── Counters - scroll triggered on stat band ── */
-function animCount(el,target){
-  if(el.dataset.animated)return;
-  el.dataset.animated='1';
-  el.textContent='0';
-  let s=0;
-  const dur=2000,step=16,inc=target/(dur/step);
-  const t=setInterval(()=>{
-    s=Math.min(s+inc,target);
-    el.textContent=target>=1000?Math.floor(s).toLocaleString():Math.floor(s);
-    if(s>=target){el.textContent=target>=1000?target.toLocaleString():target;clearInterval(t);}
-  },step);
-}
-const cro=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      animCount(e.target,parseInt(e.target.dataset.count));
-      cro.unobserve(e.target);
-    }
-  });
-},{threshold:0.2});
-document.querySelectorAll('[data-count]').forEach(el=>{
-  el.textContent='0';
-  cro.observe(el);
 });
 
 /* ── 3D tilt on project cards ── */
@@ -719,19 +679,18 @@ hs.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();const x
 document.querySelectorAll('.sk').forEach(sk=>{
   sk.addEventListener('mousemove',e=>{
     const r=sk.getBoundingClientRect();
-    const dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);
-    sk.style.transform=`translate(${dx*.2}px,${dy*.2}px)`;
+    sk.style.transform=`translate(${(e.clientX-(r.left+r.width/2))*.2}px,${(e.clientY-(r.top+r.height/2))*.2}px)`;
   });
   sk.addEventListener('mouseleave',()=>{sk.style.transform='';});
 });
 
 /* ── Chat ── */
 const KB=[
-  {keys:['cvlab','cv lab','mentoring','mentor','career','transition','researchers'],answer:"CVLab is Mo's career mentoring initiative for researchers. He helps doctoral students and postdocs reposition themselves toward industry, innovation, or tech transfer. 100+ researchers mentored so far. <a href='https://www.linkedin.com/company/cvlab-project/?viewAsMember=true' target='_blank'>LinkedIn ↗</a>"},
-  {keys:['la valorisation','valorisation','newsletter french','satt','tech transfer','transfert'],answer:"La Valorisation is Mo's French newsletter on the research-to-market ecosystem - SATTs, IP strategy, deeptech financing, TRL frameworks. Subscribe on <a href='https://www.linkedin.com/newsletters/la-valorisation-7425136874228314112/' target='_blank'>LinkedIn ↗</a>"},
-  {keys:['academia to industry','academia','industry','english newsletter','2000','subscribers'],answer:"Academia to Industry is Mo's English newsletter for researchers leaving academia - mindset, skill repositioning, job search. <a href='https://www.linkedin.com/newsletters/phd-to-industry-how-to-win%3F-7349495949863346176/' target='_blank'>LinkedIn ↗</a> - 2,000+ subscribers."},
+  {keys:['cvlab','cv lab','mentoring','mentor','career','transition','researchers'],answer:"CVLab is Mo's career mentoring initiative for researchers. He helps doctoral students and postdocs reposition themselves toward industry, innovation, or tech transfer. 100+ researchers mentored. <a href='https://www.linkedin.com/company/cvlab-project/?viewAsMember=true' target='_blank'>LinkedIn ↗</a>"},
+  {keys:['la valorisation','valorisation','newsletter french','satt','tech transfer','transfert'],answer:"La Valorisation is Mo's French newsletter on the research-to-market ecosystem - SATTs, IP strategy, deeptech financing, TRL frameworks. <a href='https://www.linkedin.com/newsletters/la-valorisation-7425136874228314112/' target='_blank'>LinkedIn ↗</a>"},
+  {keys:['academia to industry','academia','industry','english newsletter','2000','subscribers'],answer:"Academia to Industry is Mo's English newsletter for researchers leaving academia - mindset, skill repositioning, job search. 2,000+ subscribers. <a href='https://www.linkedin.com/newsletters/phd-to-industry-how-to-win%3F-7349495949863346176/' target='_blank'>LinkedIn ↗</a>"},
   {keys:['newsletter','subscribers','audience','reach','50000','50k'],answer:"Mo runs two newsletters reaching 50,000+ scientists monthly - <a href='https://www.linkedin.com/newsletters/la-valorisation-7425136874228314112/' target='_blank'>La Valorisation</a> (French) and <a href='https://www.linkedin.com/newsletters/phd-to-industry-how-to-win%3F-7349495949863346176/' target='_blank'>Academia to Industry</a> (English)."},
-  {keys:['research','phd','oncology','telomere','genome','chromatin','crcm','cancer','biology'],answer:"Mo's PhD at CRCM, Aix-Marseille (2021–2024) focused on telomere biology, genome integrity, and chromatin dynamics in ALT-positive cancer cells. His first-author manuscript is under review at Nucleic Acids Research (IF 16.6)."},
+  {keys:['research','phd','oncology','telomere','genome','chromatin','crcm','cancer','biology'],answer:"Mo's PhD at CRCM, Aix-Marseille (2021-2024) focused on telomere biology, genome integrity, and chromatin dynamics in ALT-positive cancer cells. His first-author manuscript is under review at Nucleic Acids Research (IF 16.6)."},
   {keys:['publication','paper','manuscript','nucleic','ctf18','npc'],answer:"\"Ctf18-dependent localization of interstitial telomeric sequences to nuclear pore complexes prevents chromosome fragility\" - under review at Nucleic Acids Research (IF 16.6)."},
   {keys:['contact','email','reach','connect','linkedin','hire','available','job'],answer:"Mo is in Lyon, France, available from April 2026. <a href='mailto:Mohamadhajj47@gmail.com'>Mohamadhajj47@gmail.com</a> or <a href='https://www.linkedin.com/in/mohamad-alhajj/' target='_blank'>LinkedIn</a>."},
   {keys:['who','about','introduce','yourself','mohamad','al hajj'],answer:"Mo is a PhD in Oncology from Aix-Marseille, based in Lyon. He spent 4+ years in cancer research before building CVLab, La Valorisation, and Academia to Industry to bridge science and industry. Available April 2026."}
@@ -761,4 +720,12 @@ function sendSug(el){document.getElementById('suggs').style.display='none';inp.v
 async function sendMsg(){
   const text=inp.value.trim();if(!text)return;
   inp.value='';btn.disabled=true;
-  addMsg('user',text.replace(/
+  addMsg('user',text.replace(/</g,'&lt;'));
+  showTyping();
+  await new Promise(r=>setTimeout(r,700+Math.random()*500));
+  removeTyping();addMsg('bot',getReply(text));
+  btn.disabled=false;inp.focus();
+}
+</script>
+</body>
+</html>
