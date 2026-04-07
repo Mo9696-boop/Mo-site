@@ -15,16 +15,33 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.65;overflow-x:hidden;cursor:none}
 
-#cursor{position:fixed;width:12px;height:12px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,width .3s,height .3s,background .3s;mix-blend-mode:multiply}
-#cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .08s,width .3s,height .3s,opacity .3s;opacity:.5}
-body:hover #cursor{opacity:1}
+/* ── Cursor ── */
+#cursor{position:fixed;width:12px;height:12px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply}
+#cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,opacity .3s;opacity:.5}
 .cursor-grow #cursor{width:60px;height:60px;background:rgba(184,92,56,.15)}
 .cursor-grow #cursor-ring{width:0;height:0;opacity:0}
 
+/* ── Scroll progress bar ── */
+#progress-bar{position:fixed;top:0;left:0;height:2.5px;background:linear-gradient(90deg,var(--accent),var(--navy));width:0%;z-index:9000;transition:width .1s linear;transform-origin:left}
+
+/* ── Cursor VIEW label ── */
+#cursor-label{position:fixed;pointer-events:none;z-index:9997;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--navy);border-radius:100px;padding:.25rem .7rem;opacity:0;transition:opacity .2s;transform:translate(16px,-50%)}
+#cursor-label.show{opacity:1}
+
+/* ── Scroll progress bar ── */
+#progress-bar{position:fixed;top:0;left:0;height:2.5px;background:linear-gradient(90deg,var(--accent),var(--navy));width:0%;z-index:9000}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 3rem;transition:all .4s}
-nav.solid{background:rgba(245,241,234,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:.8rem 3rem}
+/* ── Sticky availability pill (bottom-left) ── */
+#avail-pill{position:fixed;bottom:2rem;left:2rem;z-index:600;display:flex;align-items:center;gap:.55rem;background:var(--navy);border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:.5rem 1.1rem .5rem .75rem;box-shadow:0 8px 30px rgba(30,34,53,.25);text-decoration:none;transition:transform .3s,opacity .4s;cursor:none;opacity:1}
+#avail-pill:hover{transform:translateY(-3px)}
+#avail-pill.hidden{opacity:0;pointer-events:none}
+.ap-dot{width:8px;height:8px;background:#4ade80;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 0 rgba(74,222,128,.4);animation:apulse 2.5s ease-in-out infinite}
+@keyframes apulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{box-shadow:0 0 0 6px rgba(74,222,128,0)}}
+.ap-text{font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+
+/* ── Nav ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:.8rem 3rem;background:rgba(245,241,234,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .4s}
 .nav-logo{font-family:'Libre Baskerville',serif;font-size:.95rem;font-weight:700;color:var(--navy);text-decoration:none;letter-spacing:.02em}
 .nav-links{display:flex;gap:2.5rem;list-style:none}
 .nav-links a{color:var(--muted);text-decoration:none;font-size:.75rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;transition:color .2s;position:relative}
@@ -35,23 +52,36 @@ nav.solid{background:rgba(245,241,234,.95);backdrop-filter:blur(20px);border-bot
 .nav-cta::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-101%);transition:transform .3s ease}
 .nav-cta:hover::before{transform:translateX(0)}
 .nav-cta span{position:relative;z-index:1}
-@media(max-width:700px){.nav-links{display:none}.nav-cta{display:none}}
+.nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:1px solid var(--border);border-radius:4px;cursor:none;padding:6px}
+.nav-burger span{display:block;width:100%;height:1.5px;background:var(--navy);border-radius:2px;transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .25s}
+.nav-burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mobile-menu{position:fixed;inset:0;background:rgba(245,241,234,.98);backdrop-filter:blur(20px);z-index:490;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;transform:translateY(-100%);transition:transform .5s cubic-bezier(.16,1,.3,1);pointer-events:none}
+.mobile-menu.open{transform:translateY(0);pointer-events:all}
+.mobile-menu a{font-family:'Libre Baskerville',serif;font-size:2rem;font-weight:700;color:var(--navy);text-decoration:none;transition:color .2s}
+.mobile-menu a:hover{color:var(--accent)}
+.mobile-menu .mob-cta{background:var(--navy);color:#fff !important;padding:.7rem 2rem;border-radius:3px;font-family:'Inter',sans-serif;font-size:.8rem !important;letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+@media(max-width:700px){.nav-links{display:none}.nav-cta{display:none}.nav-burger{display:flex}}
 
+/* ── Hero ── */
 #hero{min-height:100vh;display:flex;align-items:center;padding:7rem 3rem 5rem;position:relative;overflow:hidden}
 .hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;animation:float 8s ease-in-out infinite}
-.orb1{width:500px;height:500px;background:rgba(184,92,56,.08);top:-100px;right:-100px;animation-delay:0s}
+.orb1{width:500px;height:500px;background:rgba(184,92,56,.08);top:-100px;right:-100px}
 .orb2{width:350px;height:350px;background:rgba(44,53,96,.06);bottom:-80px;left:-80px;animation-delay:-3s}
 .orb3{width:250px;height:250px;background:rgba(184,92,56,.05);top:40%;left:40%;animation-delay:-5s}
 @keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.05)}}
-.hero-inner{max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.1fr 1fr;gap:5rem;align-items:center;position:relative;z-index:1}
-@media(max-width:800px){.hero-inner{grid-template-columns:1fr}}
+.hero-inner{max-width:1100px;margin:0 auto;width:100%;display:flex;align-items:center;position:relative;z-index:1}
 .hero-eyebrow{display:flex;align-items:center;gap:.8rem;margin-bottom:2rem}
 .eyebrow-line{width:40px;height:1.5px;background:var(--accent)}
 .eyebrow-text{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.pw-wrap{position:relative;display:inline-block;margin-bottom:1rem;overflow:hidden}
+.pw-ghost{font-family:'Libre Baskerville',serif;font-size:clamp(3.5rem,7vw,6.5rem);font-weight:700;color:transparent;-webkit-text-stroke:1.5px rgba(184,92,56,.25);letter-spacing:.04em;line-height:1;display:block;user-select:none}
+.pw-fill{position:absolute;inset:0;background:linear-gradient(90deg,var(--accent),var(--navy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;clip-path:inset(0 100% 0 0);animation:fillWord 1.2s .3s cubic-bezier(.16,1,.3,1) forwards;font-family:'Libre Baskerville',serif;font-size:clamp(3.5rem,7vw,6.5rem);font-weight:700;letter-spacing:.04em;line-height:1}
+@keyframes fillWord{to{clip-path:inset(0 0% 0 0)}}
 .hero-name{font-family:'Libre Baskerville',serif;font-size:clamp(2.8rem,5vw,4.5rem);font-weight:700;line-height:1.02;color:var(--navy);overflow:hidden}
 .hero-name .line{display:block;overflow:hidden;padding-bottom:.12em}
-.hero-name .line span{display:block;transform:translateY(100%);animation:slideUp .8s cubic-bezier(.16,1,.3,1) forwards}
-.hero-name .line:nth-child(1) span{animation-delay:.1s}
+.hero-name .line span{display:block;transform:translateY(100%);animation:slideUp .8s cubic-bezier(.16,1,.3,1) .1s forwards}
 @keyframes slideUp{to{transform:translateY(0)}}
 .hero-title{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;font-weight:500;margin:.9rem 0 1.8rem;opacity:0;animation:fadeIn .6s .5s forwards}
 @keyframes fadeIn{to{opacity:1}}
@@ -74,32 +104,60 @@ nav.solid{background:rgba(245,241,234,.95);backdrop-filter:blur(20px);border-bot
 .hstat:hover::before{width:3px}
 .hstat:first-child{border-radius:6px 6px 0 0}
 .hstat:last-child{border-radius:0 0 6px 6px}
-.hstat-num{font-family:'Libre Baskerville',serif;font-size:2.6rem;font-weight:700;color:var(--navy);line-height:1}
-.hstat-label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem}
+.hero-left{max-width:680px}
+.hero-stats{display:none}
 
-.marquee-wrap{background:var(--navy);padding:.85rem 0;overflow:hidden;position:relative}
-.marquee-track{display:flex;gap:0;white-space:nowrap;animation:marquee 25s linear infinite}
-.marquee-item{font-size:.72rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.12em;padding:0 2.5rem;display:flex;align-items:center;gap:2.5rem;flex-shrink:0}
+/* ── Marquee ── */
+.marquee-wrap{background:var(--navy);padding:.85rem 0;overflow:hidden}
+.marquee-track{display:flex;white-space:nowrap;animation:marquee 25s linear infinite}
+.marquee-item{font-size:.72rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.12em;padding:0 2.5rem;display:inline-flex;align-items:center;gap:2.5rem;flex-shrink:0}
 .marquee-item::after{content:'✦';color:var(--accent);font-size:.6rem}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
+/* ── STAT BAND - full-width drama ── */
+#statband{background:var(--navy);padding:5rem 0;overflow:hidden;position:relative}
+#statband::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(184,92,56,.1) 0%,transparent 65%);pointer-events:none}
+.statband-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+@media(max-width:700px){.statband-grid{grid-template-columns:repeat(2,1fr)}}
+.sband-item{padding:2.5rem 2rem;text-align:center;position:relative}
+.sband-item:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;bottom:20%;width:1px;background:rgba(255,255,255,.07)}
+@media(max-width:700px){.sband-item:nth-child(2)::after,.sband-item:nth-child(4)::after{display:none}}
+.sband-num-row{display:flex;align-items:baseline;justify-content:center;line-height:1;margin-bottom:.5rem}
+.sband-num{font-family:'Libre Baskerville',serif;font-size:clamp(3rem,7vw,6rem);font-weight:700;color:#fff}
+.sband-suffix{font-family:'Libre Baskerville',serif;font-size:clamp(1.8rem,4vw,3.5rem);font-weight:700;color:var(--accent)}
+.sband-label{font-size:.68rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em}
+
+/* ── Sections shared ── */
 section{padding:7rem 3rem}
 .si{max-width:1100px;margin:0 auto}
 .sec-label{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem}
 .sec-label::before{content:'';width:30px;height:1.5px;background:var(--accent)}
-.sec-title{font-family:'Libre Baskerville',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:var(--navy);line-height:1.1}
 
-#builds{background:var(--bg2)}
-.builds-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3.5rem;gap:2rem;flex-wrap:wrap}
+/* ── EDITORIAL title - bleeds off viewport ── */
+.sec-title-big{font-family:'Libre Baskerville',serif;font-size:clamp(3.5rem,9vw,9rem);font-weight:700;color:var(--navy);line-height:1.15;letter-spacing:-.02em;margin-bottom:3rem;white-space:nowrap;overflow:visible}
+.sec-title-big em{color:var(--accent);font-style:italic;display:block;margin-top:.1em}
+.sec-title{font-family:'Libre Baskerville',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:var(--navy);line-height:1.25}
+
+/* ── HORIZONTAL SCROLL builds ── */
+#builds{background:var(--bg2);padding:7rem 0}
+.builds-header{padding:0 3rem;margin-bottom:2.5rem;display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap}
 .builds-sub{font-size:.9rem;color:var(--muted);max-width:280px;line-height:1.7;text-align:right}
 @media(max-width:600px){.builds-sub{text-align:left}}
-.builds-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:1.5rem}
-@media(max-width:900px){.builds-grid{grid-template-columns:1fr}}
-.bcard{border-radius:8px;padding:2.2rem;transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s;position:relative;overflow:hidden;cursor:none}
+.hscroll-track{display:flex;gap:1.5rem;padding:1rem 3rem 2rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;cursor:grab;user-select:none}
+.hscroll-track:active{cursor:grabbing}
+.hscroll-track::-webkit-scrollbar{height:3px}
+.hscroll-track::-webkit-scrollbar-track{background:var(--border);border-radius:3px}
+.hscroll-track::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+.drag-hint{display:flex;align-items:center;gap:.6rem;padding:0 3rem}
+.drag-hint-arrow{color:var(--accent);font-size:1.2rem;animation:nudge 1.8s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(8px)}}
+.drag-hint span{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.bcard{border-radius:8px;padding:2.2rem;transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s;position:relative;overflow:hidden;cursor:none;text-decoration:none;display:block;flex-shrink:0;width:360px;scroll-snap-align:start}
+@media(max-width:600px){.bcard{width:82vw}}
 .bcard-light{background:var(--card);border:1px solid var(--border)}
-.bcard-dark{background:var(--navy);border:1px solid var(--navy)}
+.bcard-dark{background:var(--navy);border:1px solid rgba(255,255,255,.06)}
 .bcard:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(30,34,53,.12)}
-.bcard-dark:hover{box-shadow:0 20px 50px rgba(44,53,96,.25)}
+.bcard-dark:hover{box-shadow:0 20px 50px rgba(44,53,96,.3)}
 .bcard-glow{position:absolute;width:200px;height:200px;border-radius:50%;filter:blur(60px);pointer-events:none;opacity:0;transition:opacity .4s;top:50%;left:50%;transform:translate(-50%,-50%)}
 .bcard-light .bcard-glow{background:rgba(184,92,56,.12)}
 .bcard-dark .bcard-glow{background:rgba(255,255,255,.05)}
@@ -121,14 +179,17 @@ section{padding:7rem 3rem}
 .bcard-dark .bfoot-num{color:rgba(255,255,255,.4)}
 .bfoot-lbl{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 .bcard-dark .bfoot-lbl{color:rgba(255,255,255,.35)}
-.bcard-arrow{font-size:1.4rem;transition:transform .3s}
+.bcard-arrow{font-size:1.4rem;transition:transform .35s cubic-bezier(.16,1,.3,1)}
 .bcard-light .bcard-arrow{color:var(--border)}
 .bcard-dark .bcard-arrow{color:rgba(255,255,255,.2)}
-.bcard:hover .bcard-arrow{transform:translate(4px,-4px)}
+.bcard:hover .bcard-arrow{transform:translate(5px,-5px)}
 .bcard-light:hover .bcard-arrow{color:var(--accent)}
-.bcard-dark:hover .bcard-arrow{color:rgba(255,255,255,.5)}
+.bcard-dark:hover .bcard-arrow{color:rgba(255,255,255,.6)}
 
-#about{background:var(--bg)}
+/* ── ABOUT - parallax ── */
+#about{background:var(--bg);position:relative;overflow:hidden}
+.about-parallax{position:absolute;font-family:'Libre Baskerville',serif;font-size:clamp(8rem,20vw,18rem);font-weight:700;color:rgba(44,53,96,.04);line-height:1;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;white-space:nowrap;will-change:transform;z-index:0}
+.about-inner{position:relative;z-index:1}
 .about-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:6rem;align-items:start;margin-top:4rem}
 @media(max-width:800px){.about-grid{grid-template-columns:1fr;gap:3rem}}
 .about-quote{font-family:'Libre Baskerville',serif;font-size:1.2rem;font-style:italic;color:var(--muted);line-height:1.9;position:relative;padding-left:1.8rem;margin-bottom:2.5rem}
@@ -148,14 +209,17 @@ section{padding:7rem 3rem}
 .pub-text em{color:#fff;font-style:normal;font-weight:700}
 .about-right h3{font-size:.68rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;display:flex;align-items:center;gap:.7rem}
 .about-right h3::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── MAGNETIC skills ── */
 .skills{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:2.5rem}
-.sk{background:var(--bg2);border:1px solid var(--border);color:var(--muted);border-radius:100px;padding:.28rem .8rem;font-size:.74rem;cursor:none;transition:all .25s}
-.sk:hover{background:var(--accent);border-color:var(--accent);color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(184,92,56,.25)}
+.sk{background:var(--bg2);border:1px solid var(--border);color:var(--muted);border-radius:100px;padding:.28rem .8rem;font-size:.74rem;cursor:none;transition:background .2s,border-color .2s,color .2s,box-shadow .2s;display:inline-block;will-change:transform}
+.sk:hover{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 4px 16px rgba(184,92,56,.3)}
 .comm-list{display:flex;flex-direction:column;gap:.7rem}
 .comm-item{padding:.9rem 1.1rem;background:var(--card);border:1px solid var(--border);border-radius:5px;font-size:.82rem;color:var(--muted);transition:border-color .2s,transform .2s}
 .comm-item:hover{border-color:var(--accent);transform:translateX(4px)}
 .comm-item strong{display:block;color:var(--text);font-size:.84rem;margin-bottom:.2rem}
 
+/* ── Tech ── */
 #tech{background:var(--bg2);overflow:hidden;position:relative}
 #tech::after{content:'LAB';position:absolute;right:-2rem;bottom:-2rem;font-family:'Libre Baskerville',serif;font-size:20vw;font-weight:700;color:rgba(44,53,96,.03);pointer-events:none;line-height:1}
 .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;margin-top:3.5rem}
@@ -171,10 +235,10 @@ section{padding:7rem 3rem}
 .tcard-items li:last-child{border:none}
 .tcard:hover .tcard-items li{color:var(--text)}
 
+/* ── Chat ── */
 #chat{background:var(--bg)}
 .chat-outer{display:grid;grid-template-columns:1fr 1.5fr;gap:5rem;align-items:start}
 @media(max-width:800px){.chat-outer{grid-template-columns:1fr}}
-.chat-intro-label{margin-bottom:1rem}
 .chat-intro h2{font-family:'Libre Baskerville',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--navy);line-height:1.1;margin-bottom:1.2rem}
 .chat-intro h2 em{color:var(--accent);font-style:italic}
 .chat-intro p{color:var(--muted);line-height:1.8;font-size:.92rem;margin-bottom:2rem}
@@ -195,11 +259,12 @@ section{padding:7rem 3rem}
 .chat-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 .msg{display:flex;gap:.6rem;align-items:flex-start;animation:msgIn .3s cubic-bezier(.16,1,.3,1)}
 .msg.user{flex-direction:row-reverse}
-@keyframes msgIn{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes msgIn{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
 .mav{width:28px;height:28px;border-radius:50%;flex-shrink:0;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.78rem}
 .msg.user .mav{background:var(--navy);border:none}
 .mbub{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.65rem 1rem;font-size:.845rem;max-width:82%;line-height:1.65;color:var(--text);box-shadow:0 2px 8px rgba(30,34,53,.05)}
 .msg.user .mbub{background:var(--navy);color:#fff;border-color:var(--navy)}
+.mbub a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
 .typing{display:flex;gap:5px;padding:.65rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:10px}
 .typing span{width:6px;height:6px;background:var(--muted);border-radius:50%;animation:bounce 1.2s infinite}
 .typing span:nth-child(2){animation-delay:.2s}
@@ -212,10 +277,11 @@ section{padding:7rem 3rem}
 .cinput{flex:1;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:.65rem 1rem;font-size:.845rem;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s;cursor:text}
 .cinput:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(44,53,96,.08)}
 .cinput::placeholder{color:var(--muted)}
-.csend{background:var(--navy);color:#fff;border:none;border-radius:6px;width:38px;height:38px;cursor:none;font-size:1rem;transition:all .25s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.csend{background:var(--navy);color:#fff;border:none;border-radius:6px;width:38px;height:38px;cursor:none;font-size:1.1rem;transition:all .25s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .csend:hover{background:var(--accent);transform:scale(1.08)}
-.csend:disabled{opacity:.3;cursor:not-allowed}
+.csend:disabled{opacity:.3}
 
+/* ── Footer ── */
 footer{background:var(--navy);padding:4rem 3rem 2.5rem}
 .footer-inner{max-width:1100px;margin:0 auto}
 .footer-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:3rem;flex-wrap:wrap;gap:2rem}
@@ -227,18 +293,37 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
 .footer-col a:hover{color:#fff;padding-left:.4rem}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
 .footer-copy{font-size:.7rem;color:rgba(255,255,255,.25)}
+.footer-contact-cta{display:flex;align-items:center;gap:.5rem;background:rgba(184,92,56,.15);border:1px solid rgba(184,92,56,.3);border-radius:4px;padding:.45rem 1rem;text-decoration:none;transition:all .25s}
+.footer-contact-cta:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-2px)}
+.footer-contact-cta span{font-size:.7rem;color:rgba(255,255,255,.65);font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+.footer-contact-cta:hover span{color:#fff}
+.fcc-dot{width:6px;height:6px;background:#4ade80;border-radius:50%;flex-shrink:0;animation:blink 2.5s infinite}
 
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-delay-1{transition-delay:.1s}
-.reveal-delay-2{transition-delay:.2s}
-.reveal-delay-3{transition-delay:.3s}
+.reveal{opacity:1;transform:none}
 </style>
 </head>
 <body>
 
+<div id="progress-bar"></div>
+<div id="cursor-label">View ↗</div>
+
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
+
+<!-- Sticky pill - bottom LEFT, never overlaps footer CTA -->
+<a id="avail-pill" href="https://www.linkedin.com/in/mohamad-alhajj/" target="_blank" rel="noopener">
+  <span class="ap-dot"></span>
+  <span class="ap-text">Open to opportunities</span>
+</a>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#builds" onclick="closeMenu()">Projects</a>
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#tech" onclick="closeMenu()">Research</a>
+  <a href="#chat" onclick="closeMenu()">Ask Mo</a>
+  <a class="mob-cta" href="https://www.linkedin.com/in/mohamad-alhajj/" target="_blank">LinkedIn ↗</a>
+</div>
 
 <nav id="navbar">
   <a class="nav-logo" href="#">Mohamad AL HAJJ</a>
@@ -249,6 +334,9 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
     <li><a href="#chat">Ask Mo</a></li>
   </ul>
   <a class="nav-cta" href="https://www.linkedin.com/in/mohamad-alhajj/" target="_blank"><span>LinkedIn</span></a>
+  <button class="nav-burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <section id="hero">
@@ -259,134 +347,129 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
     <div class="hero-left">
       <div class="hero-eyebrow">
         <div class="eyebrow-line"></div>
-        <div class="eyebrow-text">PhD - Lyon, France - Available April 2026</div>
+        <div class="eyebrow-text">PhD · Lyon, France · Available April 2026</div>
       </div>
-      <div style="position:relative;display:inline-block;margin-bottom:1rem;overflow:hidden">
-        <span id="portfolio-word" style="font-family:'Libre Baskerville',serif;font-size:clamp(3.5rem,7vw,6.5rem);font-weight:700;color:transparent;-webkit-text-stroke:1.5px rgba(184,92,56,.25);letter-spacing:.04em;line-height:1;display:block;position:relative;user-select:none">Portfolio
-          <span style="position:absolute;inset:0;background:linear-gradient(90deg,var(--accent),var(--navy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;clip-path:inset(0 100% 0 0);transition:clip-path 1.2s cubic-bezier(.16,1,.3,1);animation:fillWord 1.2s .3s cubic-bezier(.16,1,.3,1) forwards">Portfolio</span>
-        </span>
-        <style>@keyframes fillWord{to{clip-path:inset(0 0% 0 0)}}</style>
+      <div class="pw-wrap">
+        <span class="pw-ghost">Portfolio</span>
+        <span class="pw-fill">Portfolio</span>
       </div>
-      <h1 class="hero-name">
-        <span class="line"><span>Mohamad AL HAJJ</span></span>
-      </h1>
-      <p class="hero-title">Research and Development - Communication - Impact</p>
+      <h1 class="hero-name"><span class="line"><span>Mohamad AL HAJJ</span></span></h1>
+      <p class="hero-title">Research and Development · Communication · Impact</p>
       <p class="hero-desc">I spent 4+ years doing cancer research before realizing I knew almost nothing about what happens to science <strong>after the lab</strong>. That gap bothered me enough to do something about it.</p>
       <div class="hero-btns">
         <a class="btn-mag btn-primary" href="#chat"><span>Ask me anything</span></a>
-        <a class="btn-mag btn-outline" href="https://www.linkedin.com/in/mohamad-alhajj/" target="_blank">LinkedIn -></a>
+        <a class="btn-mag btn-outline" href="https://www.linkedin.com/in/mohamad-alhajj/" target="_blank">LinkedIn →</a>
       </div>
-    </div>
-    <div class="hero-stats">
-      <div class="hstat"><div class="hstat-num" data-count="50">0</div><div class="hstat-label">K+ Scientists reached every month</div></div>
-      <div class="hstat"><div class="hstat-num" data-count="100">0</div><div class="hstat-label">+ Researchers personally mentored</div></div>
-      <div class="hstat"><div class="hstat-num" data-count="1200">0</div><div class="hstat-label">+ Newsletter subscribers</div></div>
-      <div class="hstat"><div class="hstat-num" data-count="4">0</div><div class="hstat-label">+ Years in cancer research</div></div>
     </div>
   </div>
 </section>
 
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <span class="marquee-item">Technology Transfer</span>
-    <span class="marquee-item">Oncology PhD</span>
-    <span class="marquee-item">Science Communication</span>
-    <span class="marquee-item">Genome Integrity</span>
-    <span class="marquee-item">CVLab</span>
-    <span class="marquee-item">La Valorisation</span>
-    <span class="marquee-item">Academia to Industry</span>
-    <span class="marquee-item">Lyon, France</span>
-    <span class="marquee-item">Technology Transfer</span>
-    <span class="marquee-item">Oncology PhD</span>
-    <span class="marquee-item">Science Communication</span>
-    <span class="marquee-item">Genome Integrity</span>
-    <span class="marquee-item">CVLab</span>
-    <span class="marquee-item">La Valorisation</span>
-    <span class="marquee-item">Academia to Industry</span>
-    <span class="marquee-item">Lyon, France</span>
+    <span class="marquee-item">Technology Transfer</span><span class="marquee-item">Oncology PhD</span><span class="marquee-item">Science Communication</span><span class="marquee-item">Genome Integrity</span><span class="marquee-item">CVLab</span><span class="marquee-item">La Valorisation</span><span class="marquee-item">Academia to Industry</span><span class="marquee-item">Lyon, France</span><span class="marquee-item">Technology Transfer</span><span class="marquee-item">Oncology PhD</span><span class="marquee-item">Science Communication</span><span class="marquee-item">Genome Integrity</span><span class="marquee-item">CVLab</span><span class="marquee-item">La Valorisation</span><span class="marquee-item">Academia to Industry</span><span class="marquee-item">Lyon, France</span>
   </div>
 </div>
 
+<!-- STAT BAND -->
+<div id="statband">
+  <div class="statband-grid">
+    <div class="sband-item">
+      <div class="sband-num-row"><span class="sband-num" data-count="50">0</span><span class="sband-suffix">K+</span></div>
+      <div class="sband-label">Scientists / month</div>
+    </div>
+    <div class="sband-item">
+      <div class="sband-num-row"><span class="sband-num" data-count="100">0</span><span class="sband-suffix">+</span></div>
+      <div class="sband-label">Researchers mentored</div>
+    </div>
+    <div class="sband-item">
+      <div class="sband-num-row"><span class="sband-num" data-count="2000">0</span><span class="sband-suffix">+</span></div>
+      <div class="sband-label">Newsletter subscribers</div>
+    </div>
+    <div class="sband-item">
+      <div class="sband-num-row"><span class="sband-num" data-count="4">0</span><span class="sband-suffix">+</span></div>
+      <div class="sband-label">Years in research</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS - horizontal scroll -->
 <section id="builds">
-  <div class="si">
-    <div class="builds-header">
-      <div class="reveal">
-        <div class="sec-label">What I Build</div>
-        <div class="sec-title">Projects &<br>Initiatives</div>
-      </div>
-      <div class="builds-sub reveal reveal-delay-1">Three things I built because they didn't exist when I needed them.</div>
+  <div class="builds-header">
+    <div>
+      <div class="sec-label">What I Build</div>
+      <div class="sec-title-big">Projects &<br><em>Initiatives</em></div>
     </div>
-    <div class="builds-grid">
-      <div class="bcard bcard-dark reveal">
-        <div class="bcard-glow"></div>
-        <span class="btag">Career Mentoring</span>
-        <div class="bname">CVLab</div>
-        <p class="bdesc">Most researchers are more capable than their CVs suggest - they just don't have the language to say it. CVLab started as a side project to help a few friends. It became something bigger: 100+ researchers mentored, a growing community of scientists figuring out what comes next.</p>
-        <div class="bcard-foot"><div><div class="bfoot-num">100+</div><div class="bfoot-lbl">Researchers mentored</div></div><div class="bcard-arrow">↗</div></div>
-      </div>
-      <div class="bcard bcard-light reveal reveal-delay-1">
-        <div class="bcard-glow"></div>
-        <span class="btag">Newsletter - French</span>
-        <div class="bname">La Valorisation</div>
-        <p class="bdesc">Nobody taught me what a SATT was during my PhD. La Valorisation exists because that information shouldn't be reserved for insiders - it should reach every researcher, early enough to matter.</p>
-        <div class="bcard-foot"><div><div class="bfoot-num">50K+</div><div class="bfoot-lbl">Readers / month</div></div><div class="bcard-arrow">↗</div></div>
-      </div>
-      <div class="bcard bcard-light reveal reveal-delay-2">
-        <div class="bcard-glow"></div>
-        <span class="btag">Newsletter - English</span>
-        <div class="bname">Academia to Industry</div>
-        <p class="bdesc">The hardest part of leaving academia isn't finding a job - it's letting go of the belief that your PhD is only useful in a lab.</p>
-        <div class="bcard-foot"><div><div class="bfoot-num">1,200+</div><div class="bfoot-lbl">Subscribers</div></div><div class="bcard-arrow">↗</div></div>
-      </div>
-    </div>
+    <div class="builds-sub">Three things I built because they didn't exist when I needed them.</div>
+  </div>
+  <div class="hscroll-track" id="hscroll">
+    <a class="bcard bcard-dark" href="https://www.linkedin.com/company/cvlab-project/?viewAsMember=true" target="_blank" rel="noopener">
+      <div class="bcard-glow"></div>
+      <span class="btag">Career Mentoring</span>
+      <div class="bname">CVLab</div>
+      <p class="bdesc">Most researchers are more capable than their CVs suggest - they just don't have the language to say it. CVLab started as a side project to help a few friends. It became something bigger: 100+ researchers mentored.</p>
+      <div class="bcard-foot"><div><div class="bfoot-num">100+</div><div class="bfoot-lbl">Researchers mentored</div></div><div class="bcard-arrow">↗</div></div>
+    </a>
+    <a class="bcard bcard-light" href="https://www.linkedin.com/newsletters/la-valorisation-7425136874228314112/" target="_blank" rel="noopener">
+      <div class="bcard-glow"></div>
+      <span class="btag">Newsletter · French</span>
+      <div class="bname">La Valorisation</div>
+      <p class="bdesc">Nobody taught me what a SATT was during my PhD. La Valorisation exists because that information shouldn't be reserved for insiders - it should reach every researcher, early enough to matter.</p>
+      <div class="bcard-foot"><div><div class="bfoot-num">50K+</div><div class="bfoot-lbl">Readers / month</div></div><div class="bcard-arrow">↗</div></div>
+    </a>
+    <a class="bcard bcard-light" href="https://www.linkedin.com/newsletters/phd-to-industry-how-to-win%3F-7349495949863346176/" target="_blank" rel="noopener">
+      <div class="bcard-glow"></div>
+      <span class="btag">Newsletter · English</span>
+      <div class="bname">Academia to Industry</div>
+      <p class="bdesc">The hardest part of leaving academia isn't finding a job - it's letting go of the belief that your PhD is only useful in a lab.</p>
+      <div class="bcard-foot"><div><div class="bfoot-num">2,000+</div><div class="bfoot-lbl">Subscribers</div></div><div class="bcard-arrow">↗</div></div>
+    </a>
+  </div>
+  <div class="drag-hint">
+    <span class="drag-hint-arrow">→</span>
+    <span>Drag to explore</span>
   </div>
 </section>
 
+<!-- ABOUT - parallax word -->
 <section id="about">
-  <div class="si">
-    <div class="reveal">
-      <div class="sec-label">Background</div>
-      <div class="sec-title">Who I Am</div>
-    </div>
+  <div class="about-parallax" id="parallaxWord">IMPACT</div>
+  <div class="si about-inner">
+    <div class="sec-label">Background</div>
+    <div class="sec-title-big">Who I <em>Am</em></div>
     <div class="about-grid">
       <div>
-        <p class="about-quote reveal">I did my PhD in oncology. Cancer research. The kind of field where the distance between a discovery and a patient who needs it can feel unbridgeable. That gap convinced me early that the most capable science is not the science that gets published - it's the science that leaves the lab.</p>
+        <p class="about-quote">I did my PhD in oncology. Cancer research. The kind of field where the distance between a discovery and a patient who needs it can feel unbridgeable. That gap convinced me early that the most capable science is not the science that gets published - it's the science that leaves the lab.</p>
         <div class="exp-list">
-          <div class="exp-item reveal">
+          <div class="exp-item">
             <div class="exp-role">Founder - CVLab</div>
-            <div class="exp-place">2025 - Present</div>
+            <div class="exp-place">2025 – Present</div>
             <div class="exp-desc">Building a mentoring platform, two newsletters, and a community of scientists brave enough to think beyond the lab.</div>
           </div>
-          <div class="exp-item reveal reveal-delay-1">
+          <div class="exp-item">
             <div class="exp-role">PhD in Oncology - CRCM, Aix-Marseille University</div>
-            <div class="exp-place">2021 - 2024</div>
+            <div class="exp-place">2021 – 2024</div>
             <div class="exp-desc">Four years studying how telomeres behave under stress, developing chromatin-mapping assays from scratch, and learning that rigorous science is only half the work.</div>
           </div>
-          <div class="exp-item reveal reveal-delay-2">
+          <div class="exp-item">
             <div class="exp-role">Master's Researcher - AUB & ERIBA</div>
             <div class="exp-place">2019</div>
             <div class="exp-desc">Two labs, two countries, one project on senolytic compounds. Learned early that good science requires as much coordination as it does pipetting.</div>
           </div>
-          <div class="pub-card reveal reveal-delay-3">
+          <div class="pub-card">
             <div class="pub-label">Publication - In Review</div>
             <p class="pub-text"><em>Al Hajj et al. 2025</em> - "Ctf18-dependent localization of interstitial telomeric sequences to nuclear pore complexes prevents chromosome fragility" - <em>Nucleic Acids Research</em> (IF 16.6)</p>
           </div>
         </div>
       </div>
       <div class="about-right">
-        <div class="reveal">
+        <div>
           <h3>Expertise</h3>
-          <div class="skills">
-            <span class="sk">Tech Transfer</span><span class="sk">SATT / PUI</span><span class="sk">TRL & IP</span>
-            <span class="sk">Horizon Europe</span><span class="sk">EIC / RIA / IA</span><span class="sk">ANR Funding</span>
-            <span class="sk">Project Management</span><span class="sk">Scientific Communication</span>
-            <span class="sk">Researcher Coaching</span><span class="sk">GxP / SOP / ALCOA+</span>
-            <span class="sk">Deeptech Ecosystems</span><span class="sk">AI in Research</span>
-            <span class="sk">Genome Biology</span><span class="sk">Telomere Biology</span><span class="sk">Certified Nutritionist</span>
+          <div class="skills" id="skillsWrap">
+            <span class="sk">Tech Transfer</span><span class="sk">SATT / PUI</span><span class="sk">TRL & IP</span><span class="sk">Horizon Europe</span><span class="sk">EIC / RIA / IA</span><span class="sk">ANR Funding</span><span class="sk">Project Management</span><span class="sk">Scientific Communication</span><span class="sk">Researcher Coaching</span><span class="sk">GxP / SOP / ALCOA+</span><span class="sk">Deeptech Ecosystems</span><span class="sk">AI in Research</span><span class="sk">Genome Biology</span><span class="sk">Telomere Biology</span><span class="sk">Certified Nutritionist</span>
           </div>
         </div>
         <br>
-        <div class="reveal">
+        <div>
           <h3>Community</h3>
           <div class="comm-list">
             <div class="comm-item"><strong>Elected PhD Representative - CRCM (2 years)</strong>Voice for 70+ doctoral students. Learned that institutional change is slow, but possible.</div>
@@ -400,17 +483,15 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
 
 <section id="tech">
   <div class="si">
-    <div class="reveal">
-      <div class="sec-label">Research & Development</div>
-      <div class="sec-title">Technical Expertise</div>
-    </div>
+    <div class="sec-label">Research & Development</div>
+    <div class="sec-title-big">Technical<br><em>Expertise</em></div>
     <div class="tech-grid">
-      <div class="tcard reveal"><div class="tcard-title">Chromatin & DNA Repair</div><ul class="tcard-items"><li>TurboID, APEX2</li><li>ChEC / ChEC-qPCR</li><li>DNA damage & repair assays</li><li>Senescence & viability assays</li><li>High-throughput mutant screens (100+)</li></ul></div>
-      <div class="tcard reveal reveal-delay-1"><div class="tcard-title">Molecular & Cellular Biology</div><ul class="tcard-items"><li>Cell culture: yeast, bacteria, MCF-7, MDA-231, HUT102</li><li>Gene deletion, fusion, transformations</li><li>RT-qPCR, PCR, TeloPCR</li><li>DNA / RNA extraction</li></ul></div>
-      <div class="tcard reveal reveal-delay-2"><div class="tcard-title">Protein & Chromatin Workflows</div><ul class="tcard-items"><li>Western & Southern blotting</li><li>Immunoprecipitation (IP)</li><li>Proteomic sample preparation</li><li>Protein purification</li></ul></div>
-      <div class="tcard reveal"><div class="tcard-title">Microscopy & Staining</div><ul class="tcard-items"><li>Fluorescent & confocal microscopy</li><li>Micromanipulator</li><li>DAPI, Hoechst, EdU, BrdU</li><li>Beta-galactosidase, acridine orange</li><li>Bradford, MTT, silver staining</li></ul></div>
-      <div class="tcard reveal reveal-delay-1"><div class="tcard-title">Data & Computational Tools</div><ul class="tcard-items"><li>ImageJ, CellProfiler, ImageQTL</li><li>GraphPad Prism, Perseus</li><li>SnapGene, ApE</li><li>Excel (advanced)</li><li>Basic Python, AI agent development</li></ul></div>
-      <div class="tcard reveal reveal-delay-2"><div class="tcard-title">Scientific Communication</div><ul class="tcard-items"><li>5 oral + 2 poster presentations</li><li>Collaborations: France, Netherlands, Lebanon</li><li>Supervised 2 MSc students + 1 research engineer</li><li>Contributed to a 600K EUR collaborative grant</li></ul></div>
+      <div class="tcard"><div class="tcard-title">Chromatin & DNA Repair</div><ul class="tcard-items"><li>TurboID, APEX2</li><li>ChEC / ChEC-qPCR</li><li>DNA damage & repair assays</li><li>Senescence & viability assays</li><li>High-throughput mutant screens (100+)</li></ul></div>
+      <div class="tcard"><div class="tcard-title">Molecular & Cellular Biology</div><ul class="tcard-items"><li>Cell culture: yeast, bacteria, MCF-7, MDA-231, HUT102</li><li>Gene deletion, fusion, transformations</li><li>RT-qPCR, PCR, TeloPCR</li><li>DNA / RNA extraction</li></ul></div>
+      <div class="tcard"><div class="tcard-title">Protein & Chromatin Workflows</div><ul class="tcard-items"><li>Western & Southern blotting</li><li>Immunoprecipitation (IP)</li><li>Proteomic sample preparation</li><li>Protein purification</li></ul></div>
+      <div class="tcard"><div class="tcard-title">Microscopy & Staining</div><ul class="tcard-items"><li>Fluorescent & confocal microscopy</li><li>Micromanipulator</li><li>DAPI, Hoechst, EdU, BrdU</li><li>Beta-galactosidase, acridine orange</li><li>Bradford, MTT, silver staining</li></ul></div>
+      <div class="tcard"><div class="tcard-title">Data & Computational Tools</div><ul class="tcard-items"><li>ImageJ, CellProfiler, ImageQTL</li><li>GraphPad Prism, Perseus</li><li>SnapGene, ApE</li><li>Excel (advanced)</li><li>Basic Python, AI agent development</li></ul></div>
+      <div class="tcard"><div class="tcard-title">Scientific Communication</div><ul class="tcard-items"><li>5 oral + 2 poster presentations</li><li>Collaborations: France, Netherlands, Lebanon</li><li>Supervised 2 MSc students + 1 research engineer</li><li>Contributed to a 600K EUR collaborative grant</li></ul></div>
     </div>
   </div>
 </section>
@@ -419,28 +500,25 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
   <div class="si">
     <div class="chat-outer">
       <div>
-        <div class="chat-intro-label reveal"><div class="sec-label">AI-Powered</div></div>
-        <div class="chat-intro reveal">
+        <div class="sec-label">AI-Powered</div>
+        <div class="chat-intro">
           <h2>Ask Mo<br><em>Anything</em></h2>
           <p>Curious about CVLab, the newsletters, tech transfer, or my research? This assistant knows my work - no question is too specific.</p>
         </div>
-        <ul class="chat-hints reveal">
+        <ul class="chat-hints">
           <li>What is CVLab and how does it work?</li>
           <li>Tell me about your research background</li>
           <li>What is La Valorisation about?</li>
           <li>How can Mo help my career transition?</li>
         </ul>
       </div>
-      <div class="chat-wrap reveal reveal-delay-1">
+      <div class="chat-wrap">
         <div class="chat-head">
           <div class="ch-av">🧬</div>
           <div><div class="ch-name">Mo's Assistant</div><div class="ch-status"><span class="ch-dot"></span>Online</div></div>
         </div>
         <div class="chat-msgs" id="chatMsgs">
-          <div class="msg bot">
-            <div class="mav">🧬</div>
-            <div class="mbub">Hi! I'm Mo's assistant. Ask me anything about his background, CVLab, his newsletters, or how he can help you.</div>
-          </div>
+          <div class="msg bot"><div class="mav">🧬</div><div class="mbub">Hi! I'm Mo's assistant. Ask me anything about his background, CVLab, his newsletters, or how he can help you.</div></div>
         </div>
         <div class="suggestions" id="suggs">
           <button class="sug" onclick="sendSug(this)">What is CVLab?</button>
@@ -450,7 +528,7 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
         </div>
         <div class="chat-in">
           <input class="cinput" id="chatIn" type="text" placeholder="Type your question..." onkeydown="if(event.key==='Enter')sendMsg()"/>
-          <button class="csend" id="sendBtn" onclick="sendMsg()">></button>
+          <button class="csend" id="sendBtn" onclick="sendMsg()">›</button>
         </div>
       </div>
     </div>
@@ -462,57 +540,134 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
     <div class="footer-top">
       <div class="footer-brand">
         <div class="fn">Mohamad AL HAJJ</div>
-        <div class="fsub">Lyon, France - Available April 2026</div>
+        <div class="fsub">Lyon, France · Available April 2026</div>
       </div>
       <div class="footer-links">
         <div class="footer-col">
           <h4>Projects</h4>
-          <a href="#builds">CVLab</a>
-          <a href="#builds">La Valorisation</a>
-          <a href="#builds">Academia to Industry</a>
+          <a href="https://www.linkedin.com/company/cvlab-project/?viewAsMember=true" target="_blank" rel="noopener">CVLab ↗</a>
+          <a href="https://www.linkedin.com/newsletters/la-valorisation-7425136874228314112/" target="_blank" rel="noopener">La Valorisation ↗</a>
+          <a href="https://www.linkedin.com/newsletters/phd-to-industry-how-to-win%3F-7349495949863346176/" target="_blank" rel="noopener">Academia to Industry ↗</a>
         </div>
         <div class="footer-col">
           <h4>Connect</h4>
           <a href="https://www.linkedin.com/in/mohamad-alhajj/" target="_blank">LinkedIn</a>
-          <a href="mailto:Mohamadhajj47@gmail.com">Email</a>
+          <a href="/cdn-cgi/l/email-protection#307d5f58515d515458515a5a040770575d51595c1e535f5d">Email</a>
           <a href="#chat">Ask Mo</a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">© 2026 Mohamad AL HAJJ - All rights reserved</div>
-      <div class="footer-copy">Built with intention.</div>
+      <div class="footer-copy">© 2026 Mohamad AL HAJJ · All rights reserved</div>
+      <a class="footer-contact-cta" href="/cdn-cgi/l/email-protection#3b7654535a565a5f535a51510f0c7b5c565a525715585456">
+        <span class="fcc-dot"></span><span>Get in touch</span>
+      </a>
     </div>
   </div>
 </footer>
 
-<script>
-const cur=document.getElementById('cursor');
-const ring=document.getElementById('cursor-ring');
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── Cursor ── */
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+const curLabel=document.getElementById('cursor-label');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
-animRing();
-document.querySelectorAll('a,button,.sk,.sug,.bcard,.tcard,.exp-item,.comm-item,.chat-hints li,.hstat').forEach(el=>{
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+  curLabel.style.left=mx+'px';curLabel.style.top=my+'px';
+});
+(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.sk,.sug,.tcard,.exp-item,.comm-item').forEach(el=>{
   el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-grow'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-grow'));
 });
+/* VIEW label on project cards */
+document.querySelectorAll('.bcard').forEach(el=>{
+  el.addEventListener('mouseenter',()=>curLabel.classList.add('show'));
+  el.addEventListener('mouseleave',()=>curLabel.classList.remove('show'));
+});
 
-window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('solid',window.scrollY>40));
+/* ── Scroll progress bar ── */
+const pbar=document.getElementById('progress-bar');
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  pbar.style.width=((h.scrollTop||document.body.scrollTop)/(h.scrollHeight-h.clientHeight)*100)+'%';
+},{passive:true});
 
-const ro=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});
-},{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+/* ── Nav scroll class (kept for other uses) ── */
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('solid',window.scrollY>40),{passive:true});
 
+/* ── Scroll-triggered counters ── */
 function animCount(el,target){
-  let start=0;
-  const dur=1800,step=16;
-  const inc=target/(dur/step);
+  if(el.dataset.animated)return;
+  el.dataset.animated='1';
+  el.textContent='0';
+  let s=0;const dur=2000,step=16,inc=target/(dur/step);
+  const iv=setInterval(()=>{
+    s=Math.min(s+inc,target);
+    el.textContent=target>=1000?Math.floor(s).toLocaleString():Math.floor(s);
+    if(s>=target){el.textContent=target>=1000?target.toLocaleString():String(target);clearInterval(iv);}
+  },step);
+}
+const cro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){animCount(e.target,parseInt(e.target.dataset.count));cro.unobserve(e.target);}});
+},{threshold:0.2});
+document.querySelectorAll('[data-count]').forEach(el=>{el.textContent='0';cro.observe(el);});
+
+/* ── Mobile menu ── */
+function toggleMenu(){
+  const b=document.getElementById('burger'),m=document.getElementById('mobileMenu');
+  b.classList.toggle('open');m.classList.toggle('open');
+  document.body.style.overflow=m.classList.contains('open')?'hidden':'';
+}
+function closeMenu(){
+  document.getElementById('burger').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* ── Pill: hide when footer visible ── */
+const pill=document.getElementById('avail-pill');
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>pill.classList.toggle('hidden',e.isIntersecting));
+},{threshold:.1}).observe(document.querySelector('footer'));
+
+/* ── Text scramble on sec-labels ── */
+const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function scramble(el){
+  const original=el.textContent;
+  let iter=0;
+  const iv=setInterval(()=>{
+    el.textContent=original.split('').map((c,i)=>{
+      if(c===' ')return' ';
+      if(i<iter)return original[i];
+      return chars[Math.floor(Math.random()*chars.length)];
+    }).join('');
+    if(iter>=original.length)clearInterval(iv);
+    iter+=.8;
+  },40);
+}
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){scramble(e.target);new IntersectionObserver(()=>{}).observe(e.target);}});
+},{threshold:.5}).observe;
+document.querySelectorAll('.sec-label').forEach(el=>{
+  let done=false;
+  new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting&&!done){done=true;scramble(el);}});
+  },{threshold:.8}).observe(el);
+});
+
+/* ── Counters - scroll triggered on stat band ── */
+function animCount(el,target){
+  if(el.dataset.animated)return;
+  el.dataset.animated='1';
+  el.textContent='0';
+  let s=0;
+  const dur=2000,step=16,inc=target/(dur/step);
   const t=setInterval(()=>{
-    start=Math.min(start+inc,target);
-    el.textContent=Math.floor(start);
-    if(start>=target)clearInterval(t);
+    s=Math.min(s+inc,target);
+    el.textContent=target>=1000?Math.floor(s).toLocaleString():Math.floor(s);
+    if(s>=target){el.textContent=target>=1000?target.toLocaleString():target;clearInterval(t);}
   },step);
 }
 const cro=new IntersectionObserver(entries=>{
@@ -522,143 +677,88 @@ const cro=new IntersectionObserver(entries=>{
       cro.unobserve(e.target);
     }
   });
-},{threshold:.5});
-document.querySelectorAll('[data-count]').forEach(el=>cro.observe(el));
+},{threshold:0.2});
+document.querySelectorAll('[data-count]').forEach(el=>{
+  el.textContent='0';
+  cro.observe(el);
+});
 
-const SYS=`You are an AI assistant on the personal website of Mohamad AL HAJJ (Mo). Answer questions about Mo, his projects, and background warmly, concisely (2-4 sentences max). Respond in the same language the visitor uses.
+/* ── 3D tilt on project cards ── */
+document.querySelectorAll('.bcard').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-.5)*14;
+    const y=((e.clientY-r.top)/r.height-.5)*-14;
+    card.style.transform=`perspective(600px) rotateY(${x}deg) rotateX(${y}deg) translateY(-6px)`;
+    card.style.transition='transform .1s';
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='';
+    card.style.transition='transform .5s cubic-bezier(.16,1,.3,1)';
+  });
+});
 
-ABOUT MO:
-- PhD in Oncology (2021-2024), CRCM / Aix-Marseille University. Research: telomere biology, genome integrity, chromatin-mapping (TurboID, APEX2, ChEC-qPCR).
-- Based in Lyon, France. Available from April 2026.
-- Publication in review: Nucleic Acids Research (IF 16.6) - Ctf18, telomeres, nuclear pore complexes.
-- Contributed to a 600K EUR collaborative grant. Supervised 2 MSc students and a research engineer.
+/* ── Parallax about word ── */
+const pWord=document.getElementById('parallaxWord');
+const aboutSec=document.getElementById('about');
+window.addEventListener('scroll',()=>{
+  const rect=aboutSec.getBoundingClientRect();
+  const progress=(window.innerHeight-rect.top)/(window.innerHeight+rect.height);
+  pWord.style.transform=`translate(-50%,calc(-50% + ${(progress-.5)*130}px))`;
+},{passive:true});
 
-PROJECTS:
-- CVLab: career mentoring for 100+ researchers.
-- La Valorisation: French newsletter on tech transfer ecosystem.
-- Academia to Industry: English newsletter for researchers transitioning to industry.
-- Combined reach: 50,000+ scientists/month.
+/* ── Horizontal scroll drag ── */
+const hs=document.getElementById('hscroll');
+let isDown=false,startX,scrollL;
+hs.addEventListener('mousedown',e=>{isDown=true;hs.style.cursor='grabbing';startX=e.pageX-hs.offsetLeft;scrollL=hs.scrollLeft;});
+hs.addEventListener('mouseleave',()=>{isDown=false;hs.style.cursor='grab';});
+hs.addEventListener('mouseup',()=>{isDown=false;hs.style.cursor='grab';});
+hs.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();const x=e.pageX-hs.offsetLeft;hs.scrollLeft=scrollL-(x-startX)*1.4;});
 
-EXPERTISE: Tech transfer, SATT/PUI, TRL & IP, Horizon Europe, ANR, scientific communication, researcher coaching, deeptech ecosystems, France 2030.
+/* ── Magnetic skill tags ── */
+document.querySelectorAll('.sk').forEach(sk=>{
+  sk.addEventListener('mousemove',e=>{
+    const r=sk.getBoundingClientRect();
+    const dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);
+    sk.style.transform=`translate(${dx*.2}px,${dy*.2}px)`;
+  });
+  sk.addEventListener('mouseleave',()=>{sk.style.transform='';});
+});
 
-CONTACT: Mohamadhajj47@gmail.com | linkedin.com/in/mohamad-alhajj/
-Never invent information not listed here.`;
-
-const msgs=document.getElementById('chatMsgs');
-const inp=document.getElementById('chatIn');
-const btn=document.getElementById('sendBtn');
-function addMsg(role,text){
-  const d=document.createElement('div');
-  d.className='msg '+(role==='user'?'user':'bot');
-  d.innerHTML=`<div class="mav">${role==='user'?'👤':'🧬'}</div><div class="mbub">${text.replace(/\n/g,'<br>')}</div>`;
+/* ── Chat ── */
+const KB=[
+  {keys:['cvlab','cv lab','mentoring','mentor','career','transition','researchers'],answer:"CVLab is Mo's career mentoring initiative for researchers. He helps doctoral students and postdocs reposition themselves toward industry, innovation, or tech transfer. 100+ researchers mentored so far. <a href='https://www.linkedin.com/company/cvlab-project/?viewAsMember=true' target='_blank'>LinkedIn ↗</a>"},
+  {keys:['la valorisation','valorisation','newsletter french','satt','tech transfer','transfert'],answer:"La Valorisation is Mo's French newsletter on the research-to-market ecosystem - SATTs, IP strategy, deeptech financing, TRL frameworks. Subscribe on <a href='https://www.linkedin.com/newsletters/la-valorisation-7425136874228314112/' target='_blank'>LinkedIn ↗</a>"},
+  {keys:['academia to industry','academia','industry','english newsletter','2000','subscribers'],answer:"Academia to Industry is Mo's English newsletter for researchers leaving academia - mindset, skill repositioning, job search. <a href='https://www.linkedin.com/newsletters/phd-to-industry-how-to-win%3F-7349495949863346176/' target='_blank'>LinkedIn ↗</a> - 2,000+ subscribers."},
+  {keys:['newsletter','subscribers','audience','reach','50000','50k'],answer:"Mo runs two newsletters reaching 50,000+ scientists monthly - <a href='https://www.linkedin.com/newsletters/la-valorisation-7425136874228314112/' target='_blank'>La Valorisation</a> (French) and <a href='https://www.linkedin.com/newsletters/phd-to-industry-how-to-win%3F-7349495949863346176/' target='_blank'>Academia to Industry</a> (English)."},
+  {keys:['research','phd','oncology','telomere','genome','chromatin','crcm','cancer','biology'],answer:"Mo's PhD at CRCM, Aix-Marseille (2021–2024) focused on telomere biology, genome integrity, and chromatin dynamics in ALT-positive cancer cells. His first-author manuscript is under review at Nucleic Acids Research (IF 16.6)."},
+  {keys:['publication','paper','manuscript','nucleic','ctf18','npc'],answer:"\"Ctf18-dependent localization of interstitial telomeric sequences to nuclear pore complexes prevents chromosome fragility\" - under review at Nucleic Acids Research (IF 16.6)."},
+  {keys:['contact','email','reach','connect','linkedin','hire','available','job'],answer:"Mo is in Lyon, France, available from April 2026. <a href='mailto:Mohamadhajj47@gmail.com'>Mohamadhajj47@gmail.com</a> or <a href='https://www.linkedin.com/in/mohamad-alhajj/' target='_blank'>LinkedIn</a>."},
+  {keys:['who','about','introduce','yourself','mohamad','al hajj'],answer:"Mo is a PhD in Oncology from Aix-Marseille, based in Lyon. He spent 4+ years in cancer research before building CVLab, La Valorisation, and Academia to Industry to bridge science and industry. Available April 2026."}
+];
+function getReply(text){
+  const q=text.toLowerCase().replace(/[?!.,''`]/g,' ');
+  let best=null,bs=0;
+  for(const item of KB){let s=0;for(const k of item.keys){if(q.includes(k))s+=k.split(' ').length*3;}if(s>bs){bs=s;best=item;}}
+  if(bs>0&&best)return best.answer;
+  if(/\b(marathon|running|sport|fitness)\b/.test(q))return"Mo's marathon PR is 3:30:15. Also training calisthenics - aiming to compete.";
+  if(/\b(food|dish|meal|cook)\b/.test(q))return"Favorite dish: kibbeh bi laban. If not a scientist, he'd be a chef.";
+  if(/\b(book|atomic|habits)\b/.test(q))return"Favorite book: Atomic Habits by James Clear.";
+  if(/\b(series|breaking|bad)\b/.test(q))return"Favorite series: Breaking Bad. A scientist who builds an empire through will. 😄";
+  if(/\b(lebanon|lebanese|origin)\b/.test(q))return"Originally from Lebanon. Misses the energy - the life, the people.";
+  if(/relat|girlfriend|boyfriend|dating|single|married/.test(q))return"Strictly off the record. 😄 For professional enquiries: <a href='mailto:Mohamadhajj47@gmail.com'>email</a>.";
+  return"Reach Mo at <a href='mailto:Mohamadhajj47@gmail.com'>Mohamadhajj47@gmail.com</a> or <a href='https://www.linkedin.com/in/mohamad-alhajj/' target='_blank'>LinkedIn</a>!";
+}
+const msgs=document.getElementById('chatMsgs'),inp=document.getElementById('chatIn'),btn=document.getElementById('sendBtn');
+function addMsg(role,html){
+  const d=document.createElement('div');d.className='msg '+(role==='user'?'user':'bot');
+  d.innerHTML=`<div class="mav">${role==='user'?'👤':'🧬'}</div><div class="mbub">${html}</div>`;
   msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
 }
-function showTyping(){
-  const d=document.createElement('div');d.className='msg bot';d.id='typing';
-  d.innerHTML=`<div class="mav">🧬</div><div class="typing"><span></span><span></span><span></span></div>`;
-  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
-}
+function showTyping(){const d=document.createElement('div');d.className='msg bot';d.id='typing';d.innerHTML=`<div class="mav">🧬</div><div class="typing"><span></span><span></span><span></span></div>`;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;}
 function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
 function sendSug(el){document.getElementById('suggs').style.display='none';inp.value=el.textContent;sendMsg();}
-const KB = [
-  {
-    keys: ['cvlab','cv lab','mentoring','mentor','career','transition','researchers','phd students','postdoc'],
-    answer: "CVLab is Mo's career mentoring initiative for researchers. He helps doctoral students and postdocs identify the transferable value of their scientific expertise and reposition themselves toward industry, innovation, or tech transfer roles. So far he has personally mentored 100+ researchers. You can reach him directly on LinkedIn to learn more."
-  },
-  {
-    keys: ['la valorisation','valorisation','newsletter french','french newsletter','satt','tech transfer','transfert','valorization'],
-    answer: "La Valorisation is Mo's French-language newsletter on the research-to-market ecosystem in France. It covers SATTs, IP strategy, deeptech financing, TRL frameworks, and the full continuum from lab to market — written for researchers who want to understand valorization from the inside, not just hear about it from a distance."
-  },
-  {
-    keys: ['academia to industry','academia','industry','english newsletter','1200','subscribers','career transition'],
-    answer: "Academia to Industry is Mo's English-language newsletter for researchers navigating the leap out of academia. It covers mindset shifts, skill repositioning, networking, and job search strategy — written from lived experience. It has grown to 1,200+ subscribers."
-  },
-  {
-    keys: ['research','phd','oncology','telomere','genome','chromatin','crcm','aix','marseille','cancer','biology','turbo','apex','chec'],
-    answer: "Mo did his PhD at CRCM, Aix-Marseille University (2021-2024), focusing on telomere biology, genome integrity, and chromatin dynamics in ALT-positive cancer cells. He developed and validated several chromatin-mapping assays (TurboID, APEX2, ChEC-qPCR) that were adopted across collaborative projects. His first-author manuscript is currently under review at Nucleic Acids Research (IF 16.6)."
-  },
-  {
-    keys: ['publication','paper','manuscript','nucleic','article','submitted','review','ctf18','npc','pore'],
-    answer: "Mo's first-author manuscript — 'Ctf18-dependent localization of interstitial telomeric sequences to nuclear pore complexes prevents chromosome fragility' — is currently under review at Nucleic Acids Research (IF 16.6). It links Ctf18, interstitial telomeric sequences, and nuclear pore complex relocalization in ALT-positive cancer cells."
-  },
-  {
-    keys: ['contact','email','reach','connect','linkedin','hire','available','opportunity','job','work'],
-    answer: "Mo is based in Lyon, France and available from April 2026. You can reach him by email at Mohamadhajj47@gmail.com or connect with him on LinkedIn at linkedin.com/in/mohamad-alhajj — he's always open to interesting conversations."
-  },
-  {
-    keys: ['help','how can','what can','offer','do for','collaborate'],
-    answer: "Mo can help in several ways: mentoring researchers on career transitions through CVLab, sharing insights on the French tech transfer ecosystem through La Valorisation, or collaborating on projects at the intersection of science and innovation. The best first step is connecting on LinkedIn or sending him an email."
-  },
-  {
-    keys: ['newsletter','subscribers','audience','reach','50000','50k','scientists'],
-    answer: "Mo runs two newsletters reaching 50,000+ scientists monthly combined — La Valorisation (French, focused on tech transfer) and Academia to Industry (English, focused on career transitions). Academia to Industry alone has grown to 1,200+ subscribers."
-  },
-  {
-    keys: ['lyon','france','location','based','where','city'],
-    answer: "Mo is based in Lyon, France. He is available from April 2026 and authorized to work anywhere in the EU without visa sponsorship."
-  },
-  {
-    keys: ['skill','expertise','competence','know','experience','background','technical','microscopy','qpcr','western','blot'],
-    answer: "Mo's expertise spans two worlds: on the scientific side — chromatin biology, genome integrity, confocal microscopy, RT-qPCR, Western blotting, proteomic workflows, and data analysis. On the innovation side — tech transfer, SATT ecosystems, TRL & IP strategy, Horizon Europe, ANR funding, and researcher coaching."
-  },
-  {
-    keys: ['who','about','introduce','yourself','tell me about mo','mohamad','al hajj'],
-    answer: "Mo is a PhD in Oncology from Aix-Marseille University, currently based in Lyon. He spent 4+ years doing cancer research before realizing most researchers never learn what happens to science after the lab. So he built CVLab, La Valorisation, and Academia to Industry — three initiatives to close that gap. He is available for new opportunities from April 2026."
-  }
-];
-
-function getReply(text) {
-  const q = text.toLowerCase().replace(/[?!.,''`]/g, ' ');
-
-  // Pass 1: exact keyword match in KB (longer matches score higher)
-  let best = null, bestScore = 0;
-  for (const item of KB) {
-    let score = 0;
-    for (const k of item.keys) {
-      if (q.includes(k)) score += k.split(' ').length * 3;
-    }
-    if (score > bestScore) { bestScore = score; best = item; }
-  }
-  if (bestScore > 0 && best) return best.answer;
-
-  // Pass 2: topic regex fallbacks (word boundaries for precision)
-  if (/\b(old|age|born|birth|birthday|how old|years old)\b/.test(q))
-    return "Mo was born on April 1st, 1996 — yes, April Fools' Day — and just turned 30.";
-  if (/\b(nutrition|nutritionist|diet|certified|sports nutrition|nutriti)\b/.test(q))
-    return "Mo is a certified nutritionist — which pairs well with his calisthenics training and marathon running. Science in the lab and science on the plate.";
-  if (/\b(marathon|pr|running|run|calisthenics|training|workout|sport|fitness|athletic)\b/.test(q))
-    return "Mo's marathon PR is 3:30:15. He's also training calisthenics with the goal of competing at a high level — self-described beginner, aiming very high.";
-  if (/\b(food|eat|dish|cook|cuisine|restaurant|chef|recipe|meal|favorite meal|favourite meal)\b/.test(q))
-    return "Mo's favorite dish is kibbeh bi laban. If he weren't a scientist, he'd be a chef.";
-  if (/\b(music|song|listen|artist|weeknd|playlist)\b/.test(q))
-    return "Mo listens to The Weeknd. Good taste by any measure.";
-  if (/\b(book|read|reading|atomic|habits)\b/.test(q))
-    return "Mo's favorite book is Atomic Habits by James Clear.";
-  if (/\b(series|show|movie|watch|film|breaking|bad)\b/.test(q))
-    return "Favorite series: Breaking Bad. A scientist who builds an empire through sheer will — no comment on the parallels. 😄";
-  if (/\b(morning|coffee|routine|wake|start)\b/.test(q))
-    return "Mo's morning is simple: coffee, work, and calm.";
-  if (/\b(lebanon|lebanese|origin|hometown|miss|home country)\b/.test(q))
-    return "Mo is originally from Lebanon. What he misses most is the energy — the life, the people there.";
-  if (/\b(introvert|extrovert|personality|character|type|person)\b/.test(q))
-    return "Mo is curious above everything. Both introverted and extroverted depending on who's in the room — and deeply persistent when he sets his mind on something.";
-  if (/relat|girlfriend|boyfriend|dating|single|married|love|partner|wife|husband|taken|available|seeing someone|with someone|his girl|his guy|does he have|does mo have|is he with|is mo with|is he single|is mo single|does he date/.test(q))
-    return "Did you really think you'd get an answer here? 😄 Sorry to disappoint — Mo's personal life is strictly off the record. If you have a more professional enquiry though, reach him at Mohamadhajj47@gmail.com or linkedin.com/in/mohamad-alhajj — he's much more forthcoming on those.";
-  if (/\b(contact|email|reach|linkedin|hire|available)\b/.test(q))
-    return "Reach Mo at Mohamadhajj47@gmail.com or linkedin.com/in/mohamad-alhajj — available from April 2026.";
-
-  return "I may not have that detail — reach Mo directly at Mohamadhajj47@gmail.com or linkedin.com/in/mohamad-alhajj!";
-}
-
 async function sendMsg(){
   const text=inp.value.trim();if(!text)return;
   inp.value='';btn.disabled=true;
-  addMsg('user',text);showTyping();
-  await new Promise(r=>setTimeout(r,800+Math.random()*600));
-  removeTyping();
-  addMsg('bot', getReply(text));
-  btn.disabled=false;inp.focus();
-}
-</script>
-</body>
-</html>
+  addMsg('user',text.replace(/
