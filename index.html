@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +13,33 @@
   --text:#1E2235;--muted:#7A7580;--border:#D8D1C4;
 }
 html{scroll-behavior:smooth}
+
+/* ── Testimonials Carousel ── */
+#testimonials{padding:7rem 0;background:var(--bg2);position:relative;overflow:hidden}
+#testimonials::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(184,92,56,.06) 0%,transparent 65%);pointer-events:none}
+.testi-header{max-width:1100px;margin:0 auto 4rem;padding:0 3rem;display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.testi-nav{display:flex;gap:.75rem}
+.testi-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:none;font-size:1.1rem;color:var(--navy);transition:all .25s;flex-shrink:0}
+.testi-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy);transform:scale(1.08)}
+.testi-track-outer{overflow:hidden;position:relative}
+.testi-track{display:flex;gap:1.5rem;padding:0 3rem 2rem;transition:transform .55s cubic-bezier(.16,1,.3,1);will-change:transform}
+.tcard-t{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:2rem 2rem 1.8rem;min-width:340px;max-width:340px;flex-shrink:0;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s}
+.tcard-t:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(30,34,53,.1)}
+.tcard-t::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--navy));transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+.tcard-t:hover::before{transform:scaleX(1)}
+.tcard-quote{font-size:2.5rem;line-height:1;color:var(--accent);opacity:.25;font-family:'Libre Baskerville',serif;margin-bottom:.5rem;user-select:none}
+.tcard-text{font-family:'Libre Baskerville',serif;font-style:italic;font-size:.9rem;color:var(--text);line-height:1.8;margin-bottom:1.5rem;flex:1}
+.tcard-footer{display:flex;align-items:center;gap:.75rem;border-top:1px solid var(--border);padding-top:1.2rem;margin-top:auto}
+.tcard-avatar{width:36px;height:36px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0;letter-spacing:.02em}
+.tcard-meta{}
+.tcard-name{font-size:.78rem;font-weight:600;color:var(--navy);letter-spacing:.02em}
+.tcard-date{font-size:.68rem;color:var(--muted);margin-top:.1rem}
+.testi-stars{display:flex;gap:2px;margin-bottom:1rem}
+.testi-stars span{color:#F5A623;font-size:.8rem}
+.testi-dots{display:flex;justify-content:center;gap:.5rem;margin-top:2rem}
+.testi-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:all .3s;cursor:none}
+.testi-dot.active{background:var(--accent);width:20px;border-radius:3px}
+@media(max-width:700px){.tcard-t{min-width:280px;max-width:280px}.testi-header{flex-direction:column;align-items:flex-start}}
 body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.65;overflow-x:hidden;cursor:none}
 
 /* ── Cursor ── */
@@ -549,6 +575,116 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
   </div>
 </section>
 
+<section id="testimonials">
+  <div class="testi-header">
+    <div>
+      <div class="sec-label">CVLab Reviews</div>
+      <div class="sec-title-big">What Researchers<br><em>Say</em></div>
+    </div>
+    <div class="testi-nav">
+      <button class="testi-btn" id="testiPrev" aria-label="Previous">←</button>
+      <button class="testi-btn" id="testiNext" aria-label="Next">→</button>
+    </div>
+  </div>
+  <div class="testi-track-outer">
+    <div class="testi-track" id="testiTrack">
+
+      <div class="tcard-t">
+        <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="tcard-quote">"</div>
+        <p class="tcard-text">I had the chance to be mentored by Mohamad through the CV Lab project, and it was such a meaningful experience. He took the time to review my CV carefully, give me detailed suggestions, and helped me understand how to present myself when moving from academia to industry. At that time, I felt quite lost and uncertain, but Mohamad really opened my eyes. He guided me with clarity, encouraged me when I doubted myself, and helped me see my strengths from a new perspective.</p>
+        <div class="tcard-footer">
+          <div class="tcard-avatar">R</div>
+          <div class="tcard-meta">
+            <div class="tcard-name">Researcher · CVLab Mentee</div>
+            <div class="tcard-date">November 13, 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard-t">
+        <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="tcard-quote">"</div>
+        <p class="tcard-text">I had such a great experience with Mohamad through CV Lab! His feedback was clear, kind, and really practical. He pointed out things I never would have noticed on my own, and helped me present my CV in a way that feels true to me but also stronger for PhD applications. What I appreciated most was how approachable and encouraging he was — it honestly felt like talking to someone who genuinely wants to see you succeed. The fact that he offers this for free says a lot about who he is.</p>
+        <div class="tcard-footer">
+          <div class="tcard-avatar">S</div>
+          <div class="tcard-meta">
+            <div class="tcard-name">Early-Career Researcher · CVLab Mentee</div>
+            <div class="tcard-date">October 1, 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard-t">
+        <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="tcard-quote">"</div>
+        <p class="tcard-text">I found the micro-mentoring session with Dr. Mohamad very insightful and supportive. I joined with several doubts about shaping my academic career path. Dr. Mohamad listened patiently, asked the right questions, and gave me clear, actionable guidance that I could immediately apply to my applications. His practical advice and encouraging approach left me with more confidence and a better sense of direction. This session was extremely impactful, and I would highly recommend it to anyone seeking clarity.</p>
+        <div class="tcard-footer">
+          <div class="tcard-avatar">A</div>
+          <div class="tcard-meta">
+            <div class="tcard-name">PhD / Postdoc · CVLab Mentee</div>
+            <div class="tcard-date">October 1, 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard-t">
+        <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="tcard-quote">"</div>
+        <p class="tcard-text">I was thrilled to join Mohamad Al Hajj's micro-mentoring session after seeing his LinkedIn post, as I'd been eager for one-on-one mentoring. It was exactly what I needed. Unsure about pursuing a PhD, I gained clarity through his clear, practical advice, which helped me map out my next career steps. I no longer feel stuck at crossroads and I'm so grateful for his guidance. I highly recommend his sessions to anyone seeking career growth.</p>
+        <div class="tcard-footer">
+          <div class="tcard-avatar">N</div>
+          <div class="tcard-meta">
+            <div class="tcard-name">Researcher · CVLab Mentee</div>
+            <div class="tcard-date">September 27, 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard-t">
+        <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="tcard-quote">"</div>
+        <p class="tcard-text">Such a great initiative Dr. Mohamad has started. It is such a hard thing in this era to get genuine and good advice. He's giving just that — with great experience in the field, he is not only guiding students but also giving clarity to those who are confused and stuck. CV Lab mentoring sessions are highly recommended. Dear Mohamad sir, I hope you all the best for all your future endeavours. Thank you.</p>
+        <div class="tcard-footer">
+          <div class="tcard-avatar">P</div>
+          <div class="tcard-meta">
+            <div class="tcard-name">Researcher · CVLab Mentee</div>
+            <div class="tcard-date">September 29, 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard-t">
+        <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="tcard-quote">"</div>
+        <p class="tcard-text">Mohamad supported me in updating my CV to its best version. His attention, efforts and continued dedication are incredible. I recommend him for detail-oriented, professional or mentoring work. Thank you.</p>
+        <div class="tcard-footer">
+          <div class="tcard-avatar">M</div>
+          <div class="tcard-meta">
+            <div class="tcard-name">Researcher · CVLab Mentee</div>
+            <div class="tcard-date">October 8, 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard-t">
+        <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="tcard-quote">"</div>
+        <p class="tcard-text">I had the chance to benefit from Mohamad's inspiring, exemplary, and generous initiative, which combines proactivity with solidarity among peers. His guidance was extremely efficient, thanks to his impactful, insightful, and quick review. I highly recommend it!</p>
+        <div class="tcard-footer">
+          <div class="tcard-avatar">L</div>
+          <div class="tcard-meta">
+            <div class="tcard-name">Researcher · CVLab Mentee</div>
+            <div class="tcard-date">October 3, 2025</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="testi-dots" id="testiDots"></div>
+</section>
+
 <footer>
   <div class="footer-inner">
     <div class="footer-top">
@@ -566,21 +702,21 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
         <div class="footer-col">
           <h4>Connect</h4>
           <a href="https://www.linkedin.com/in/mohamad-alhajj/" target="_blank">LinkedIn</a>
-          <a href="mailto:Mohamadhajj47@gmail.com">Email</a>
+          <a href="/cdn-cgi/l/email-protection#317c5e59505c505559505b5b050671565c50585d1f525e5c">Email</a>
           <a href="#chat">Ask Mo</a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">© 2026 Mohamad AL HAJJ · All rights reserved</div>
-      <a class="footer-contact-cta" href="mailto:Mohamadhajj47@gmail.com">
+      <a class="footer-contact-cta" href="/cdn-cgi/l/email-protection#5e1331363f333f3a363f34346a691e39333f3732703d3133">
         <span class="fcc-dot"></span><span>Get in touch</span>
       </a>
     </div>
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── Cursor ── */
 const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
 const curLabel=document.getElementById('cursor-label');
@@ -742,14 +878,55 @@ function addMsg(role,html){
 function showTyping(){const d=document.createElement('div');d.className='msg bot';d.id='typing';d.innerHTML=`<div class="mav">🧬</div><div class="typing"><span></span><span></span><span></span></div>`;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;}
 function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
 function sendSug(el){document.getElementById('suggs').style.display='none';inp.value=el.textContent;sendMsg();}
+
+/* ── Testimonials Carousel ── */
+(function(){
+  const track=document.getElementById('testiTrack');
+  const dotsWrap=document.getElementById('testiDots');
+  if(!track)return;
+  const cards=Array.from(track.querySelectorAll('.tcard-t'));
+  let cur=0,startX=0,isDragging=false,dragDelta=0;
+  function getVisible(){return window.innerWidth<=700?1:window.innerWidth<=900?2:3;}
+  function getCardW(){const s=cards[0].getBoundingClientRect();return s.width+24;}
+  function buildDots(){
+    dotsWrap.innerHTML='';
+    const pages=Math.ceil(cards.length/getVisible());
+    for(let i=0;i<pages;i++){const d=document.createElement('div');d.className='testi-dot'+(i===0?' active':'');dotsWrap.appendChild(d);}
+  }
+  function updateDots(){
+    dotsWrap.querySelectorAll('.testi-dot').forEach((d,i)=>d.classList.toggle('active',i===Math.floor(cur/getVisible())));
+  }
+  function goTo(idx){
+    const max=Math.max(0,cards.length-getVisible());
+    cur=Math.max(0,Math.min(idx,max));
+    track.style.transform=`translateX(-${cur*getCardW()}px)`;
+    updateDots();
+  }
+  document.getElementById('testiNext').addEventListener('click',()=>goTo(cur+1));
+  document.getElementById('testiPrev').addEventListener('click',()=>goTo(cur-1));
+  track.addEventListener('mousedown',e=>{isDragging=true;startX=e.clientX;dragDelta=0;track.style.transition='none';});
+  window.addEventListener('mouseup',()=>{if(!isDragging)return;isDragging=false;track.style.transition='transform .55s cubic-bezier(.16,1,.3,1)';dragDelta<-60?goTo(cur+1):dragDelta>60?goTo(cur-1):goTo(cur);});
+  window.addEventListener('mousemove',e=>{if(!isDragging)return;dragDelta=e.clientX-startX;track.style.transform=`translateX(${-cur*getCardW()+dragDelta}px)`;});
+  track.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;dragDelta=0;track.style.transition='none';},{passive:true});
+  track.addEventListener('touchend',()=>{track.style.transition='transform .55s cubic-bezier(.16,1,.3,1)';dragDelta<-60?goTo(cur+1):dragDelta>60?goTo(cur-1):goTo(cur);});
+  track.addEventListener('touchmove',e=>{dragDelta=e.touches[0].clientX-startX;track.style.transform=`translateX(${-cur*getCardW()+dragDelta}px)`;},{passive:true});
+  let timer=setInterval(()=>goTo(cur+1<=cards.length-getVisible()?cur+1:0),4800);
+  ['testiNext','testiPrev'].forEach(id=>document.getElementById(id).addEventListener('click',()=>{clearInterval(timer);timer=setInterval(()=>goTo(cur+1<=cards.length-getVisible()?cur+1:0),4800);}));
+  cards.forEach(c=>{c.addEventListener('mouseenter',()=>document.body.classList.add('cursor-grow'));c.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-grow'));});
+  [document.getElementById('testiPrev'),document.getElementById('testiNext')].forEach(btn=>{btn.addEventListener('mouseenter',()=>document.body.classList.add('cursor-grow'));btn.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-grow'));});
+  window.addEventListener('resize',()=>{buildDots();goTo(0);});
+  buildDots();goTo(0);
+})();
 async function sendMsg(){
   const text=inp.value.trim();if(!text)return;
   inp.value='';btn.disabled=true;
   addMsg('user',text.replace(/</g,'&lt;'));
   showTyping();
-  await new Promise(r=>setTimeout(r,700+Math.random()*500));
-  removeTyping();addMsg('bot',getReply(text));
-  btn.disabled=false;inp.focus();
+  await new Promise(r=>setTimeout(r,900+Math.random()*600));
+  removeTyping();
+  addMsg('bot',getReply(text));
+  btn.disabled=false;
+  inp.focus();
 }
 </script>
 </body>
