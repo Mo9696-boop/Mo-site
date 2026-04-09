@@ -354,6 +354,7 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
   <a href="#builds" onclick="closeMenu()">Projects</a>
   <a href="#about" onclick="closeMenu()">About</a>
   <a href="#tech" onclick="closeMenu()">Research</a>
+  <a href="#testimonials" onclick="closeMenu()">Testimonials</a>
   <a href="#chat" onclick="closeMenu()">Ask Mo</a>
   <a class="mob-cta" href="https://www.linkedin.com/in/mohamad-alhajj/" target="_blank">LinkedIn ↗</a>
 </div>
@@ -364,6 +365,7 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
     <li><a href="#builds">Projects</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#tech">Research</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
     <li><a href="#chat">Ask Mo</a></li>
   </ul>
   <a class="nav-cta" href="https://www.linkedin.com/in/mohamad-alhajj/" target="_blank"><span>LinkedIn</span></a>
@@ -536,50 +538,11 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
   </div>
 </section>
 
-<section id="chat">
-  <div class="si">
-    <div class="chat-outer">
-      <div>
-        <div class="sec-label">AI-Powered</div>
-        <div class="chat-intro">
-          <h2>Ask Mo<br><em>Anything</em></h2>
-          <p>Curious about CVLab, the newsletters, tech transfer, or my research? This assistant knows my work - no question is too specific.</p>
-        </div>
-        <ul class="chat-hints">
-          <li>What is CVLab and how does it work?</li>
-          <li>Tell me about your research background</li>
-          <li>What is La Valorisation about?</li>
-          <li>How can Mo help my career transition?</li>
-        </ul>
-      </div>
-      <div class="chat-wrap">
-        <div class="chat-head">
-          <div class="ch-av">🧬</div>
-          <div><div class="ch-name">Mo's Assistant</div><div class="ch-status"><span class="ch-dot"></span>Online</div></div>
-        </div>
-        <div class="chat-msgs" id="chatMsgs">
-          <div class="msg bot"><div class="mav">🧬</div><div class="mbub">Hi! I'm Mo's assistant. Ask me anything about his background, CVLab, his newsletters, or how he can help you.</div></div>
-        </div>
-        <div class="suggestions" id="suggs">
-          <button class="sug" onclick="sendSug(this)">What is CVLab?</button>
-          <button class="sug" onclick="sendSug(this)">La Valorisation?</button>
-          <button class="sug" onclick="sendSug(this)">Research background?</button>
-          <button class="sug" onclick="sendSug(this)">How can Mo help?</button>
-        </div>
-        <div class="chat-in">
-          <input class="cinput" id="chatIn" type="text" placeholder="Type your question..." onkeydown="if(event.key==='Enter')sendMsg()"/>
-          <button class="csend" id="sendBtn" onclick="sendMsg()">›</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section id="testimonials">
   <div class="testi-header">
     <div>
       <div class="sec-label">CVLab Reviews</div>
-      <div class="sec-title-big">What Researchers<br><em>Say</em></div>
+      <div class="sec-title-big" style="white-space:nowrap">Testi<span style="color:var(--accent);font-style:italic;display:inline">monials</span></div>
     </div>
     <div class="testi-nav">
       <button class="testi-btn" id="testiPrev" aria-label="Previous">←</button>
@@ -683,6 +646,45 @@ footer{background:var(--navy);padding:4rem 3rem 2.5rem}
     </div>
   </div>
   <div class="testi-dots" id="testiDots"></div>
+</section>
+
+<section id="chat">
+  <div class="si">
+    <div class="chat-outer">
+      <div>
+        <div class="sec-label">AI-Powered</div>
+        <div class="chat-intro">
+          <h2>Ask Mo<br><em>Anything</em></h2>
+          <p>Curious about CVLab, the newsletters, tech transfer, or my research? This assistant knows my work - no question is too specific.</p>
+        </div>
+        <ul class="chat-hints">
+          <li>What is CVLab and how does it work?</li>
+          <li>Tell me about your research background</li>
+          <li>What is La Valorisation about?</li>
+          <li>How can Mo help my career transition?</li>
+        </ul>
+      </div>
+      <div class="chat-wrap">
+        <div class="chat-head">
+          <div class="ch-av">🧬</div>
+          <div><div class="ch-name">Mo's Assistant</div><div class="ch-status"><span class="ch-dot"></span>Online</div></div>
+        </div>
+        <div class="chat-msgs" id="chatMsgs">
+          <div class="msg bot"><div class="mav">🧬</div><div class="mbub">Hi! I'm Mo's assistant. Ask me anything about his background, CVLab, his newsletters, or how he can help you.</div></div>
+        </div>
+        <div class="suggestions" id="suggs">
+          <button class="sug" onclick="sendSug(this)">What is CVLab?</button>
+          <button class="sug" onclick="sendSug(this)">La Valorisation?</button>
+          <button class="sug" onclick="sendSug(this)">Research background?</button>
+          <button class="sug" onclick="sendSug(this)">How can Mo help?</button>
+        </div>
+        <div class="chat-in">
+          <input class="cinput" id="chatIn" type="text" placeholder="Type your question..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+          <button class="csend" id="sendBtn" onclick="sendMsg()">›</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <footer>
